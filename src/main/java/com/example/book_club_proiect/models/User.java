@@ -1,6 +1,7 @@
 package com.example.book_club_proiect.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "users")
@@ -16,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
@@ -35,7 +37,8 @@ public class User {
     private List<Book> books;
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "users")
+    @JsonIgnore
     private List<RentingTable> rentingTableList;
 
 

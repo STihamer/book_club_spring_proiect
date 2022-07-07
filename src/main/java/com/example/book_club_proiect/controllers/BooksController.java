@@ -2,9 +2,7 @@ package com.example.book_club_proiect.controllers;
 
 
 import com.example.book_club_proiect.models.Book;
-import com.example.book_club_proiect.models.User;
 import com.example.book_club_proiect.services.BookService;
-import com.example.book_club_proiect.services.UserService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,10 +20,10 @@ public class BooksController {
     @Autowired
     private final BookService bookService;
 
-
     public BooksController(BookService bookService) {
         this.bookService = bookService;
     }
+
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Book> getAll() {
@@ -54,5 +52,7 @@ public class BooksController {
     public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
         return bookService.updateBook(id, book);
     }
+
+
 
 }

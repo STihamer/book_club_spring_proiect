@@ -23,7 +23,7 @@ public class WaitingList {
     @Column(updatable = false, insertable = false)
     private Integer available_after;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+  /*  @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="available_after")
-    private RentingTable rentingTable;
+    private RentingTable rentingTable;*/
 }

@@ -1,7 +1,7 @@
 package com.example.book_club_proiect.controllers;
 
-import com.example.book_club_proiect.models.Book;
 import com.example.book_club_proiect.models.User;
+import com.example.book_club_proiect.repositories.UserRepository;
 import com.example.book_club_proiect.services.UserService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import java.util.List;
 
 @RestController
@@ -21,9 +18,12 @@ public class UsersController {
     @Autowired
     private final UserService userService;
 
+    @Autowired
+    private final UserRepository userRepository;
 
-    public UsersController(UserService userService) {
+    public UsersController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -34,7 +34,8 @@ public class UsersController {
     @GetMapping
     @RequestMapping("{id}")
     public Object getById(@PathVariable Long id) {
-        return userService.getById(id).isPresent() ? userService.getById(id).get() : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return userService.getById(id).isPresent() ? userService.getById(id).get() :
+                new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
@@ -51,5 +52,7 @@ public class UsersController {
     public User updateUser(@PathVariable Long id, @RequestBody User user) {
         return userService.updateUser(id, user);
     }
+
+
 
 }

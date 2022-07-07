@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "books")
@@ -17,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Book {
+public class Book implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +30,13 @@ public class Book {
 
     @ManyToMany(mappedBy = "books")
     @JsonIgnore
-    private List<User> users;
+    private List<User> user;
 
-
-    @OneToMany(mappedBy = "book")
-    private List<RentingTable> rentingTableList;
-
-    @ManyToMany(mappedBy = "bookList")
     @JsonIgnore
-    private List<User> userList;
+    @OneToMany(mappedBy = "books")
+    private List <RentingTable> rentingTableList;
+
+    /*@ManyToMany(mappedBy = "bookList")
+    @JsonIgnore
+    private List<User> userList;*/
 }
