@@ -27,8 +27,10 @@ public class JoinQueryService {
         return list;
     }
 
-    public List<GetMyBooksAndRentingPersonAndReturningDay> getMyBooksRenterReturnDateAndTitle() {
-        List<GetMyBooksAndRentingPersonAndReturningDay> list = userRepository.getMyBooksRenterReturnDateAndTitle();
+    public List<GetMyBooksAndRentingPersonAndReturningDay>
+    getMyBooksRenterReturnDateAndTitle(String first_name, String last_name) {
+        List<GetMyBooksAndRentingPersonAndReturningDay> list =
+                userRepository.getMyBooksRenterReturnDateAndTitle(first_name, last_name);
         list.forEach(l -> System.out.println(l));
         return list;
     }

@@ -25,8 +25,14 @@ public class JoinQueryController {
     }
 
     @GetMapping("/UserTitleAndReturnDate")
-    public ResponseEntity<List<GetMyBooksAndRentingPersonAndReturningDay>> getMyBooksRenterReturnDateAndTitle() {
-        return new ResponseEntity<List<GetMyBooksAndRentingPersonAndReturningDay>>(joinQueryService.getMyBooksRenterReturnDateAndTitle(), HttpStatus.OK);
+    public ResponseEntity<List<GetMyBooksAndRentingPersonAndReturningDay>>
+    getMyBooksRenterReturnDateAndTitle(
+            @RequestParam(value = "first_name", required = false) String first_name,
+            @RequestParam(value = "last_name",required = false)String last_name
+    ) {
+        return new ResponseEntity<List<GetMyBooksAndRentingPersonAndReturningDay>>
+                (joinQueryService.getMyBooksRenterReturnDateAndTitle
+                        (first_name, last_name), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/OneBookByTitle", method = RequestMethod.GET)
