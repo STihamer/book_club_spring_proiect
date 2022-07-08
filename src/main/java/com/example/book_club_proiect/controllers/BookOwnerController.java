@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("book_owners")
+@RequestMapping("book_owner")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
-public class BookOwnersController {
+public class BookOwnerController {
 
     @Autowired
     private final BookOwnerService book_ownerService;
 
 
-    public BookOwnersController(BookOwnerService book_ownerService) {
+    public BookOwnerController(BookOwnerService book_ownerService) {
         this.book_ownerService = book_ownerService;
     }
 

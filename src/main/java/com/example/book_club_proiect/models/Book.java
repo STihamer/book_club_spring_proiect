@@ -36,7 +36,8 @@ public class Book implements Serializable {
     @OneToMany(mappedBy = "books")
     private List <RentingTable> rentingTableList;
 
-    /*@ManyToMany(mappedBy = "bookList")
     @JsonIgnore
-    private List<User> userList;*/
+    @OneToMany(mappedBy = "books")
+    private List <MyListing> myListingList;
+
 }

@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "book_owners")
+@Entity(name = "book_owner")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -22,7 +22,7 @@ public class BookOwner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long book_owner_id;
     private Integer user_id;
-    private Integer book_id;
+
 
 
 }

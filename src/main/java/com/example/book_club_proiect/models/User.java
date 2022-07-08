@@ -31,9 +31,9 @@ public class User implements Serializable {
 
     @ManyToMany
     @JoinTable(
-            name = "book_owners",
+            name = "book_owner",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
+            inverseJoinColumns = @JoinColumn(name = "book_owner_id"))
     private List<Book> books;
 
 
@@ -41,6 +41,9 @@ public class User implements Serializable {
     @JsonIgnore
     private List<RentingTable> rentingTableList;
 
+    @OneToMany(mappedBy = "users")
+    @JsonIgnore
+    private List<MyListing> myListingList;
 
     @ManyToMany
     @JoinTable(
