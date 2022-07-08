@@ -2,6 +2,7 @@ package com.example.book_club_proiect.controllers;
 
 
 import com.example.book_club_proiect.models.Book;
+import com.example.book_club_proiect.models.MyListing;
 import com.example.book_club_proiect.models.RentingPeriods;
 import com.example.book_club_proiect.services.RentingPeriodsService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

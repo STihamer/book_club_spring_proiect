@@ -24,16 +24,16 @@ public class RentingTable implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(updatable = false, insertable = false)
-    private Integer borrowed_by;
+    private Long borrowed_by;
 
     @Column(unique = true,updatable = false, insertable = false)
-    private Integer book_id;
+    private Long book_id;
 
     @Column(nullable = false)
     private LocalDate  borrowed_date;
 
     @Column(updatable = false, insertable = false)
-    private Integer renting_period;
+    private Long renting_period;
 
     @Column(nullable = false)
     private LocalDate return_date;
@@ -53,6 +53,8 @@ public class RentingTable implements Serializable {
    @JoinColumn(name="borrowed_by")
     private User users;
 
-    /*@OneToMany(mappedBy = "rentingTable")
-    private List<WaitingList> waitingListList;*/
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="renting_period")
+    private RentingPeriods renting_periods;
+
 }

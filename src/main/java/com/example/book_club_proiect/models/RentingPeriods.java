@@ -1,6 +1,7 @@
 package com.example.book_club_proiect.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +22,9 @@ public class RentingPeriods implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer renting_period;
+    private Long renting_period;
 
-   /* @OneToMany(mappedBy = "rentingPeriods")
-    private List<RentingTable> rentingTableList;*/
+    @OneToMany(mappedBy = "renting_periods")
+    @JsonIgnore
+    private List<RentingTable> rentingTableList;
 }

@@ -1,7 +1,7 @@
 package com.example.book_club_proiect.controllers;
 
 
-import com.example.book_club_proiect.models.Book;
+import com.example.book_club_proiect.dto.FindUserByFirstNameAndUserEmail;
 import com.example.book_club_proiect.models.RentingTable;
 import com.example.book_club_proiect.services.RentingTableService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -38,7 +38,28 @@ public class RentingTableController {
     }
 
     @PostMapping
-    public RentingTable createRentingTable(@RequestBody final RentingTable rentingTable) {
-        return rentingTableService.createRentingTable(rentingTable);
+    public RentingTable createMyRentingTable(
+            @RequestParam Long borrowed_by,
+            @RequestParam Long book_id,
+            @RequestParam Long renting_period) {
+        return rentingTableService.createMyRentingTable(borrowed_by, book_id, renting_period);
     }
+
+    /*@RequestMapping(value = "/changeReturnDate", method = RequestMethod.PUT)
+    public Object getByIdForChangingRentingPeriod(
+            @RequestParam Long id, @RequestParam Long renting_period) {
+        return rentingTableService.getByIdForChangingRentingPeriod(id, renting_period).isPresent() ?
+                rentingTableService.getById(id).get() :
+                new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }*/
+
+
+    @RequestMapping(value = "/modifyReturnDate", method = RequestMethod.PATCH)
+    public  RentingTable findRentingTableByIdAndChangeRenting_period
+            (@RequestParam(value = "id", required=
+                    false) Long id,
+             @RequestParam(value = "period", required=false)Long  period) {
+        return rentingTableService.findRentingTableByIdAndChangeRenting_period(id, period);
+    }
+
 }

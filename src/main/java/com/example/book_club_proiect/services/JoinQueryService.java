@@ -56,5 +56,4 @@ public class JoinQueryService {
         return list.get(0);
     }
 
-
 }

@@ -17,6 +17,7 @@ public interface RentingTableRepository extends JpaRepository<RentingTable, Long
     List<BooksNonRentedResponse> getNonRentedBooks();
 
 
+
     @Query(value = "SELECT new com.example.book_club_proiect.dto.FindBookByTitleOrAuthorIfAvailable" +
             "( d.author_fname, d.author_lname, d.book_title, c.return_date) FROM books d join d" +
             ".rentingTableList c " +
@@ -25,4 +26,9 @@ public interface RentingTableRepository extends JpaRepository<RentingTable, Long
             (@Param("book_title") String book_title,
              @Param("author_fname") String author_fname,
              @Param("author_lname") String author_lname);
+
+    @Query(value = "select r from renting_table r where r.id = :renting_table_id")
+    RentingTable findRentingTableByIdAndChangeRenting_period(
+            @Param("renting_table_id") Long renting_table_id);
+
 }
