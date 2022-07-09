@@ -29,11 +29,8 @@ public class User implements Serializable {
     private String user_email;
     private String user_password;
 
-    @ManyToMany
-    @JoinTable(
-            name = "book_owner",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_owner_id"))
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Book> books;
 
 
@@ -43,12 +40,5 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "users")
     @JsonIgnore
-    private List<MyListing> myListingList;
-
-    @ManyToMany
-    @JoinTable(
-            name = "waiting_list",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private List<Book> bookList;
+    private List<WaitingList> waitingLists;
 }

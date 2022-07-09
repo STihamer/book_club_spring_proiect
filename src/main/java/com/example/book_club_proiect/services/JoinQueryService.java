@@ -4,6 +4,7 @@ import com.example.book_club_proiect.dto.*;
 import com.example.book_club_proiect.repositories.BookRepository;
 import com.example.book_club_proiect.repositories.RentingTableRepository;
 import com.example.book_club_proiect.repositories.UserRepository;
+import com.example.book_club_proiect.repositories.WaitingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class JoinQueryService {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private WaitingListRepository waitingListRepository;
 
     public List<BooksNonRentedResponse> getNonRentedBooks() {
         List<BooksNonRentedResponse> list = rentingTableRepository.getNonRentedBooks();
@@ -56,6 +60,13 @@ public class JoinQueryService {
                 userRepository.findUsersByFirst_nameAndUser_email(first_name, user_email);
 
         return list.get(0);
+    }
+
+   public List<GetUsersFromWaitingListWithBookTitle>
+    getUsersFromWaitingListWithBookTitle(String first_name, String last_name) {
+        List<GetUsersFromWaitingListWithBookTitle> list =
+               waitingListRepository.getUsersFromWaitingListWithBookTitle(first_name, last_name);
+        return list;
     }
 
 }

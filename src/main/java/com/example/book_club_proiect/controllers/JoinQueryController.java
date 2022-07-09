@@ -28,7 +28,7 @@ public class JoinQueryController {
     public ResponseEntity<List<GetMyBooksAndRentingPersonAndReturningDay>>
     getMyBooksRenterReturnDateAndTitle(
             @RequestParam(value = "first_name", required = false) String first_name,
-            @RequestParam(value = "last_name",required = false)String last_name
+            @RequestParam(value = "last_name", required = false) String last_name
     ) {
         return new ResponseEntity<List<GetMyBooksAndRentingPersonAndReturningDay>>
                 (joinQueryService.getMyBooksRenterReturnDateAndTitle
@@ -55,12 +55,24 @@ public class JoinQueryController {
     }
 
     @RequestMapping(value = "/first_name_email", method = RequestMethod.GET)
-    public  ResponseEntity<FindUserByFirstNameAndUserEmail> findUserByFirstNameAndUser_email
-            (@RequestParam(value = "first_name", required=
-            false) String first_name,
-             @RequestParam(value = "user_email", required=false)String  user_email) {
+    public ResponseEntity<FindUserByFirstNameAndUserEmail> findUserByFirstNameAndUser_email
+            (@RequestParam(value = "first_name", required =
+                    false) String first_name,
+             @RequestParam(value = "user_email", required = false) String user_email) {
         return new ResponseEntity<FindUserByFirstNameAndUserEmail>
                 (joinQueryService.findUsersByFirst_nameAndUser_email(first_name, user_email),
+                        HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/waitingPersonsAndBookTitle", method = RequestMethod.GET)
+    public ResponseEntity<List<GetUsersFromWaitingListWithBookTitle>> getUsersFromWaitingListWithBookTitle(
+            @RequestParam(value = "first_name",
+                    required = false) String first_name,
+            @RequestParam(value = "last_name",
+                    required = false) String last_name)
+           {
+        return new ResponseEntity<List<GetUsersFromWaitingListWithBookTitle>>
+                (joinQueryService.getUsersFromWaitingListWithBookTitle(first_name, last_name),
                         HttpStatus.OK);
     }
 }

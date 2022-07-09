@@ -27,6 +27,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
            " = :last_name")
    List<GetMyBooksAndRentingPersonAndReturningDay> getMyBooksRenterReturnDateAndTitle(
            @Param("first_name") String first_name,
-           @Param("last_name") String email);
+           @Param("last_name") String last_name);
 
 }

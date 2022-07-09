@@ -18,12 +18,20 @@ public class WaitingList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer user_id;
-    private Integer book_id;
-    @Column(updatable = false, insertable = false)
-    private Integer available_after;
 
-  /*  @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="available_after")
-    private RentingTable rentingTable;*/
+    @Column(updatable = false, insertable = false)
+    private Long user_id;
+
+    @Column(updatable = false, insertable = false)
+    private Long book_for_reading;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    private User users;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="book_for_reading")
+    private BookOwner bookOwner;
+
+
 }

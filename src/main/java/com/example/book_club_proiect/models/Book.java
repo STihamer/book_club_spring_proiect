@@ -28,16 +28,19 @@ public class Book implements Serializable {
     private String author_lname;
     private Integer published;
 
-    @ManyToMany(mappedBy = "books")
-    @JsonIgnore
-    private List<User> user;
+    @ManyToMany
+    @JoinTable(
+            name = "book_owner",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
+
+
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "books")
     private List <RentingTable> rentingTableList;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "books")
-    private List <MyListing> myListingList;
 
 }

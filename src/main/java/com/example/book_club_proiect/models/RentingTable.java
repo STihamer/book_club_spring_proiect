@@ -39,10 +39,6 @@ public class RentingTable implements Serializable {
     private LocalDate return_date;
 
 
-    /*@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="borrowed_by")
-    private User user;*/
-
 
 
     @ManyToOne(fetch=FetchType.LAZY)

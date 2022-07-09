@@ -1,15 +1,14 @@
 package com.example.book_club_proiect.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "book_owner")
 @NoArgsConstructor
@@ -20,9 +19,12 @@ import javax.persistence.Id;
 public class BookOwner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long book_owner_id;
+    private Long id;
+
+    private Long book_id;
     private Integer user_id;
 
-
-
+    @OneToMany(mappedBy = "bookOwner")
+    @JsonIgnore
+    private List<WaitingList> waitingLists;
 }
