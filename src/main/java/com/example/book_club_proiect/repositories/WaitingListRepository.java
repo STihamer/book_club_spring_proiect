@@ -16,10 +16,7 @@ public interface WaitingListRepository extends JpaRepository<WaitingList, Long> 
 
    @Query(value = "SELECT new com.example.book_club_proiect.dto.GetUsersFromWaitingListWithBookTitle" +
             "(u.first_name , u.last_name, b.book_id, bs.book_title ) from  books bs, users u join u" +
-           ".waitingLists " +
-           "w join w" +
-           ".bookOwner " +
-           "b" +
+           ".waitingLists w join w.bookOwner b" +
            " where bs.book_id =b.book_id and u.first_name = :first_name and u.last_name = :last_name")
     List<GetUsersFromWaitingListWithBookTitle> getUsersFromWaitingListWithBookTitle(
            @Param("first_name") String first_name,

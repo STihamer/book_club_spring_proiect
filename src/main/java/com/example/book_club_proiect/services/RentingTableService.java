@@ -1,11 +1,14 @@
 package com.example.book_club_proiect.services;
 
 
+import com.example.book_club_proiect.models.RentingPeriods;
 import com.example.book_club_proiect.models.RentingTable;
+import com.example.book_club_proiect.models.User;
 import com.example.book_club_proiect.repositories.BookRepository;
 import com.example.book_club_proiect.repositories.RentingPeriodsRepository;
 import com.example.book_club_proiect.repositories.RentingTableRepository;
 import com.example.book_club_proiect.repositories.UserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,8 +73,12 @@ public class RentingTableService {
     public RentingTable findRentingTableByIdAndChangeRenting_period(Long id, Long period) {
         RentingTable rentingTable = rentingTableRepository.findRentingTableByIdAndChangeRenting_period(id);
         rentingTable.setReturn_date(rentingTable.getReturn_date().plusWeeks(period));
+        BeanUtils.copyProperties(rentingTable, "id");
+        return rentingTableRepository.saveAndFlush(rentingTable);
 
-        return rentingTable;
     }
 
+    public void deleteRentingTableById(Long id) {
+        rentingTableRepository.deleteById(id);
+    }
 }

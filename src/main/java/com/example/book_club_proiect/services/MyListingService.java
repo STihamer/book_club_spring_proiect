@@ -7,6 +7,7 @@ import com.example.book_club_proiect.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,4 +46,20 @@ public class MyListingService {
         myListing.setBooks(bookRepository.findById(book_title).get());
         return myListingRepository.saveAndFlush(myListing);
     }
+
+    public void deleteFromMyListing(String book_title, String first_name, String last_name) {
+        List<MyListing> operatedList = new ArrayList<>();
+        myListingRepository.findAll().stream()
+                .filter(e -> e.getBooks().getBook_title().equals(book_title))
+                .filter(e -> e.getUsers().getFirst_name().equals(first_name))
+                .filter(e -> e.getUsers().getLast_name().equals(last_name))
+                .forEach(e -> operatedList.add(e));
+        myListingRepository.deleteAll(operatedList);
+
+    }
+
+    public void deleteMyListingById(Long id) {
+        myListingRepository.deleteById(id);
+    }
+
 }

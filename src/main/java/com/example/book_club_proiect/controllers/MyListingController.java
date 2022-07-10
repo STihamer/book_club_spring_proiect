@@ -35,9 +35,23 @@ public class MyListingController {
                 new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+
     @PostMapping
     public MyListing createMyListing(@RequestParam Long reading_person, @RequestParam Long book_title) {
         return myListingService.createMyListing(reading_person, book_title);
+    }
+
+    @RequestMapping(value = "/deleteMyListing", method = RequestMethod.DELETE)
+    public void deleteFromMyListing(
+            @RequestParam String book_title,
+            @RequestParam String first_name,
+            @RequestParam String last_name) {
+       myListingService.deleteFromMyListing(book_title, first_name, last_name);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public void deleteMyListingById(@PathVariable Long id) {
+        myListingService.deleteMyListingById(id);
     }
 
 }

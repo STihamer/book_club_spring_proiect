@@ -45,21 +45,19 @@ public class RentingTableController {
         return rentingTableService.createMyRentingTable(borrowed_by, book_id, renting_period);
     }
 
-    /*@RequestMapping(value = "/changeReturnDate", method = RequestMethod.PUT)
-    public Object getByIdForChangingRentingPeriod(
-            @RequestParam Long id, @RequestParam Long renting_period) {
-        return rentingTableService.getByIdForChangingRentingPeriod(id, renting_period).isPresent() ?
-                rentingTableService.getById(id).get() :
-                new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }*/
 
 
-    @RequestMapping(value = "/modifyReturnDate", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/modifyReturnDate", method = RequestMethod.PUT)
     public  RentingTable findRentingTableByIdAndChangeRenting_period
             (@RequestParam(value = "id", required=
                     false) Long id,
              @RequestParam(value = "period", required=false)Long  period) {
         return rentingTableService.findRentingTableByIdAndChangeRenting_period(id, period);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public void deleteRentingTableById(@PathVariable Long id) {
+        rentingTableService.deleteRentingTableById(id);
     }
 
 }

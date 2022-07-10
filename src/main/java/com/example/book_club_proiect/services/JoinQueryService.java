@@ -1,10 +1,7 @@
 package com.example.book_club_proiect.services;
 
 import com.example.book_club_proiect.dto.*;
-import com.example.book_club_proiect.repositories.BookRepository;
-import com.example.book_club_proiect.repositories.RentingTableRepository;
-import com.example.book_club_proiect.repositories.UserRepository;
-import com.example.book_club_proiect.repositories.WaitingListRepository;
+import com.example.book_club_proiect.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +21,9 @@ public class JoinQueryService {
 
     @Autowired
     private WaitingListRepository waitingListRepository;
+
+    @Autowired
+    private MyListingRepository myListingRepository;
 
     public List<BooksNonRentedResponse> getNonRentedBooks() {
         List<BooksNonRentedResponse> list = rentingTableRepository.getNonRentedBooks();
@@ -55,17 +55,24 @@ public class JoinQueryService {
     }
 
     public FindUserByFirstNameAndUserEmail findUsersByFirst_nameAndUser_email(String first_name,
-                                                                                    String user_email) {
+                                                                              String user_email) {
         List<FindUserByFirstNameAndUserEmail> list =
                 userRepository.findUsersByFirst_nameAndUser_email(first_name, user_email);
 
         return list.get(0);
     }
 
-   public List<GetUsersFromWaitingListWithBookTitle>
+    public List<GetUsersFromWaitingListWithBookTitle>
     getUsersFromWaitingListWithBookTitle(String first_name, String last_name) {
         List<GetUsersFromWaitingListWithBookTitle> list =
-               waitingListRepository.getUsersFromWaitingListWithBookTitle(first_name, last_name);
+                waitingListRepository.getUsersFromWaitingListWithBookTitle(first_name, last_name);
+        return list;
+    }
+
+    public List<GetNameAndBookTitleFromMyListing>
+    getNameAndBookTitleFromMyListing(String first_name, String last_name) {
+        List<GetNameAndBookTitleFromMyListing> list =
+                myListingRepository.getNameAndBookTitleFromMyListing(first_name, last_name);
         return list;
     }
 

@@ -12,7 +12,7 @@ import org.springframework.core.annotation.AliasFor;
 @ToString
 public class GetUsersFromWaitingListWithBookTitle {
 
-    private String first_name;
+   private String first_name;
     private String last_name;
 
     private Long book_id;

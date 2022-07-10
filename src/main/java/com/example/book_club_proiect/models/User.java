@@ -41,4 +41,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "users")
     @JsonIgnore
     private List<WaitingList> waitingLists;
+
+    @OneToMany(mappedBy = "users")
+    @JsonIgnore
+    private List<MyListing> myListingList;
 }

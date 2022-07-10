@@ -75,4 +75,17 @@ public class JoinQueryController {
                 (joinQueryService.getUsersFromWaitingListWithBookTitle(first_name, last_name),
                         HttpStatus.OK);
     }
+    @RequestMapping(value = "/myListingByUser", method = RequestMethod.GET)
+    public ResponseEntity<List<GetNameAndBookTitleFromMyListing>> getNameAndBookTitleFromMyListing(
+            @RequestParam(value = "first_name",
+                    required = false) String first_name,
+            @RequestParam(value = "last_name",
+                    required = false) String last_name)
+    {
+        return new ResponseEntity<List<GetNameAndBookTitleFromMyListing>>
+                (joinQueryService.getNameAndBookTitleFromMyListing(first_name, last_name),
+                        HttpStatus.OK);
+    }
+
+
 }
