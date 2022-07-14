@@ -25,10 +25,11 @@ public class User implements Serializable {
     private String first_name;
     private String last_name;
     private Integer user_age;
-    private String username ;
+    private String username;
     private String user_email;
     private String user_password;
-
+    @Column(updatable = false, insertable = false)
+    private Long role_id;
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Book> books;
@@ -45,4 +46,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "users")
     @JsonIgnore
     private List<MyListing> myListingList;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Roles.class)
+    @JoinColumn(name = "role_id", referencedColumnName = "role_Id", nullable = false)
+    private Roles roles;
 }
