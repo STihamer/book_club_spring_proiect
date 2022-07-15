@@ -44,8 +44,15 @@ public class UsersController {
     }
 
     @PostMapping
-    public User createSession(@RequestBody final User user) {
-        return userService.createUser(user);
+    public User createUser(@RequestParam String first_name,
+                              @RequestParam String last_name,
+                              @RequestParam Integer user_age,
+                              @RequestParam String username,
+                              @RequestParam String user_email,
+                              @RequestParam String user_password,
+                              @RequestParam Long role_id) {
+        return userService.createUser(
+                first_name, last_name, user_age, username, user_email, user_password, role_id);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)

@@ -25,4 +25,6 @@ public class Roles {
     private Long role_Id;
 
     private String role_name;
+
+
 }
