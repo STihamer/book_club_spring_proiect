@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("books")
+@RequestMapping("api/books")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
 public class BooksController {
@@ -38,8 +38,7 @@ public class BooksController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void deleteBookById(@PathVariable Long id) {
-        bookService.deleteBookById(id);
+    public void deleteBookById(@PathVariable Long id) {bookService.deleteBookById(id);
     }
 
     @PostMapping

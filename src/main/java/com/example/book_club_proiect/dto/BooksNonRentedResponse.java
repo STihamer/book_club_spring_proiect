@@ -14,5 +14,8 @@ import java.time.LocalDate;
 @ToString
 public class BooksNonRentedResponse {
     private String book_title;
+    private String author_fname;
+    private String author_lname;
     private LocalDate return_date;
+
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("renting_periods")
+@RequestMapping("api/rentingPeriods")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RentingPeriodsController {
 

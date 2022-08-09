@@ -1,7 +1,6 @@
 package com.example.book_club_proiect.controllers;
 
 
-import com.example.book_club_proiect.dto.FindUserByFirstNameAndUserEmail;
 import com.example.book_club_proiect.models.RentingTable;
 import com.example.book_club_proiect.services.RentingTableService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("renting_table")
+@RequestMapping("api/rentingTables")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RentingTableController {
 
@@ -47,7 +46,7 @@ public class RentingTableController {
 
 
 
-    @RequestMapping(value = "/modifyReturnDate", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/modifyReturnDate", method = RequestMethod.PUT)
     public  RentingTable findRentingTableByIdAndChangeRenting_period
             (@RequestParam(value = "id", required=
                     false) Long id,

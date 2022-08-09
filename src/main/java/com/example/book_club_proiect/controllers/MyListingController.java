@@ -1,6 +1,5 @@
 package com.example.book_club_proiect.controllers;
 
-import com.example.book_club_proiect.models.Book;
 import com.example.book_club_proiect.models.MyListing;
 import com.example.book_club_proiect.services.MyListingService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("my_listing")
+@RequestMapping("api/myListings")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class MyListingController {
 
@@ -41,7 +40,7 @@ public class MyListingController {
         return myListingService.createMyListing(reading_person, book_title);
     }
 
-    @RequestMapping(value = "/deleteMyListing", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/deleteMyListing", method = RequestMethod.DELETE)
     public void deleteFromMyListing(
             @RequestParam String book_title,
             @RequestParam String first_name,

@@ -22,7 +22,7 @@ public class BookOwner {
     private Long id;
 
     private Long book_id;
-    private Integer user_id;
+    private Long user_id;
 
     @OneToMany(mappedBy = "bookOwner")
     @JsonIgnore

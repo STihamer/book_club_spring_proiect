@@ -27,7 +27,6 @@ public class JoinQueryService {
 
     public List<BooksNonRentedResponse> getNonRentedBooks() {
         List<BooksNonRentedResponse> list = rentingTableRepository.getNonRentedBooks();
-        list.forEach(l -> System.out.println(l));
         return list;
     }
 

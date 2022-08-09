@@ -19,12 +19,12 @@ public class JoinQueryController {
     private JoinQueryService joinQueryService;
 
 
-    @GetMapping("/booksNonRented")
+    @GetMapping("api/booksNonRented")
     public ResponseEntity<List<BooksNonRentedResponse>> getNonRentedBooks() {
         return new ResponseEntity<List<BooksNonRentedResponse>>(joinQueryService.getNonRentedBooks(), HttpStatus.OK);
     }
 
-    @GetMapping("/UserTitleAndReturnDate")
+    @GetMapping("api/userTitleAndReturnDate")
     public ResponseEntity<List<GetMyBooksAndRentingPersonAndReturningDay>>
     getMyBooksRenterReturnDateAndTitle(
             @RequestParam(value = "first_name", required = false) String first_name,
@@ -35,7 +35,7 @@ public class JoinQueryController {
                         (first_name, last_name), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/OneBookByTitle", method = RequestMethod.GET)
+    @RequestMapping(value = "api/oneBookByTitle", method = RequestMethod.GET)
     public ResponseEntity<List<FindBookByTitleInRentingTable>> findMyBokByGivenTitle(@RequestParam(value =
             "book_title",
             required = false) String book_title) {
@@ -43,7 +43,7 @@ public class JoinQueryController {
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/bookAvailabilityByAuthorOrTitle", method = RequestMethod.GET)
+    @RequestMapping(value = "api/bookAvailabilityByAuthorOrTitle", method = RequestMethod.GET)
     public ResponseEntity<List<FindBookByTitleOrAuthorIfAvailable>> findAllBookByAuthorNameOrBookTitle
             (@RequestParam(value = "book_title", required = false) String book_title,
              @RequestParam(value = "author_fname", required = false) String author_fname,
@@ -54,7 +54,7 @@ public class JoinQueryController {
                         HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/first_name_email", method = RequestMethod.GET)
+    @RequestMapping(value = "api/firstNameAndEmail", method = RequestMethod.GET)
     public ResponseEntity<FindUserByFirstNameAndUserEmail> findUserByFirstNameAndUser_email
             (@RequestParam(value = "first_name", required =
                     false) String first_name,
@@ -64,7 +64,7 @@ public class JoinQueryController {
                         HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/waitingPersonsAndBookTitle", method = RequestMethod.GET)
+    @RequestMapping(value = "api/waitingPersonsAndBookTitle", method = RequestMethod.GET)
     public ResponseEntity<List<GetUsersFromWaitingListWithBookTitle>> getUsersFromWaitingListWithBookTitle(
             @RequestParam(value = "first_name",
                     required = false) String first_name,
@@ -75,7 +75,7 @@ public class JoinQueryController {
                 (joinQueryService.getUsersFromWaitingListWithBookTitle(first_name, last_name),
                         HttpStatus.OK);
     }
-    @RequestMapping(value = "/myListingByUser", method = RequestMethod.GET)
+    @RequestMapping(value = "api/myListingsByUser", method = RequestMethod.GET)
     public ResponseEntity<List<GetNameAndBookTitleFromMyListing>> getNameAndBookTitleFromMyListing(
             @RequestParam(value = "first_name",
                     required = false) String first_name,

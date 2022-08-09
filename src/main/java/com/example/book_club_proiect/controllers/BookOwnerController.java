@@ -11,46 +11,46 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("book_owner")
+@RequestMapping("api/bookOwners")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
 public class BookOwnerController {
 
     @Autowired
-    private final BookOwnerService book_ownerService;
+    private final BookOwnerService bookOwnerService;
 
 
-    public BookOwnerController(BookOwnerService book_ownerService) {
-        this.book_ownerService = book_ownerService;
+    public BookOwnerController(BookOwnerService bookOwnerService) {
+        this.bookOwnerService = bookOwnerService;
     }
 
 
     @RequestMapping(method = RequestMethod.GET)
     public List<BookOwner> getAll() {
-        return book_ownerService.getAll();
+        return bookOwnerService.getAll();
     }
 
 
     @GetMapping
     @RequestMapping("{id}")
     public Object getById(@PathVariable Long id) {
-        return book_ownerService.getById(id).isPresent() ? book_ownerService.getById(id).get() :
+        return bookOwnerService.getById(id).isPresent() ? bookOwnerService.getById(id).get() :
                 new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void deleteById(@PathVariable Long id) {
-        book_ownerService.deleteById(id);
+        bookOwnerService.deleteById(id);
     }
 
     @PostMapping
     public BookOwner createBook(@RequestBody final BookOwner book_owner) {
-        return book_ownerService.createBook_Owner(book_owner);
+        return bookOwnerService.createBook_Owner(book_owner);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public BookOwner updateBookOwner(@PathVariable Long id, @RequestBody BookOwner bookOwner) {
-        return book_ownerService.updateBookOwner(id, bookOwner);
+        return bookOwnerService.updateBookOwner(id, bookOwner);
     }
 
 }

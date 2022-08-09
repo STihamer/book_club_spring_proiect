@@ -22,4 +22,6 @@ public interface WaitingListRepository extends JpaRepository<WaitingList, Long> 
            @Param("first_name") String first_name,
            @Param("last_name") String last_name);
 
+
+
 }

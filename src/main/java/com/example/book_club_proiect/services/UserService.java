@@ -1,5 +1,6 @@
 package com.example.book_club_proiect.services;
 
+import com.example.book_club_proiect.models.Book;
 import com.example.book_club_proiect.models.RentingTable;
 import com.example.book_club_proiect.models.User;
 import com.example.book_club_proiect.repositories.RolesRepository;
@@ -58,12 +59,15 @@ public class UserService {
     }
 
     public User updateUser(Long id, User user) {
-        User existingSession = userRepository.findById(id).get();
-        BeanUtils.copyProperties(user, existingSession, "id");
-        return userRepository.saveAndFlush(existingSession);
+        User existingUser = userRepository.findById(id).get();
+        existingUser.setFirst_name(user.getFirst_name());
+        existingUser.setLast_name(user.getLast_name());;
+        existingUser.setUser_age(user.getUser_age());
+        existingUser.setUsername(user.getUsername());
+        existingUser.setUser_email(user.getUser_email());
+        existingUser.setUser_password(user.getUser_password());
+        existingUser.setRole_id(user.getRole_id());
+        existingUser.setRoles(rolesRepository.findById(user.getRole_id()).get());
+        return userRepository.saveAndFlush(existingUser);
     }
-
-
-
-
 }

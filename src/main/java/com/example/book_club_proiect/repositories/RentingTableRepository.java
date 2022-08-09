@@ -12,7 +12,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 public interface RentingTableRepository extends JpaRepository<RentingTable, Long> {
 
-    @Query(value = "SELECT new com.example.book_club_proiect.dto.BooksNonRentedResponse(d.book_title, e.return_date) "
+    @Query(value = "SELECT new com.example.book_club_proiect.dto.BooksNonRentedResponse(d.book_title, d.author_fname," +
+            " d.author_lname," +
+            " e" +
+            ".return_date) "
             + "FROM books d Left JOIN d.rentingTableList e where e.return_date is null")
     List<BooksNonRentedResponse> getNonRentedBooks();
 

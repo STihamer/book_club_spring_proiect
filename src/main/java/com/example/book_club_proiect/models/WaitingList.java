@@ -25,6 +25,8 @@ public class WaitingList {
     @Column(updatable = false, insertable = false)
     private Long book_for_reading;
 
+    private Boolean finished;
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User users;
