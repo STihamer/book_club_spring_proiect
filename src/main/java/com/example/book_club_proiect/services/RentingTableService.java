@@ -56,7 +56,9 @@ public class RentingTableService {
         rentingTable.setBook_id(book_id);
         rentingTable.setBorrowed_date(LocalDate.now());
         rentingTable.setRenting_period(renting_period);
-        rentingTable.setReturn_date(LocalDate.now().plusWeeks(renting_period));
+        Long period = rentingPeriodsRepository.findById(renting_period).get().getRenting_period();
+        rentingTable.setReturn_date(LocalDate.now().plusDays(period));
+        rentingTable.setReturn_date_extended(false);
         rentingTable.setUsers(userRepository.findById(borrowed_by).get());
         rentingTable.setBooks(bookRepository.findById(book_id).get());
         rentingTable.setRenting_periods(rentingPeriodsRepository.findById(renting_period).get());
@@ -72,8 +74,8 @@ public class RentingTableService {
 
     public RentingTable findRentingTableByIdAndChangeRenting_period(Long id, Long period) {
         RentingTable rentingTable = rentingTableRepository.findRentingTableByIdAndChangeRenting_period(id);
-        rentingTable.setReturn_date(rentingTable.getReturn_date().plusWeeks(period));
-        BeanUtils.copyProperties(rentingTable, "id");
+        rentingTable.setReturn_date(rentingTable.getReturn_date().plusDays(period));
+        rentingTable.setReturn_date_extended(true);
         return rentingTableRepository.saveAndFlush(rentingTable);
 
     }

@@ -46,10 +46,9 @@ public class RentingTableController {
 
 
 
-    @RequestMapping(value = "/api/modifyReturnDate", method = RequestMethod.PUT)
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public  RentingTable findRentingTableByIdAndChangeRenting_period
-            (@RequestParam(value = "id", required=
-                    false) Long id,
+            (@PathVariable Long id,
              @RequestParam(value = "period", required=false)Long  period) {
         return rentingTableService.findRentingTableByIdAndChangeRenting_period(id, period);
     }
@@ -58,5 +57,4 @@ public class RentingTableController {
     public void deleteRentingTableById(@PathVariable Long id) {
         rentingTableService.deleteRentingTableById(id);
     }
-
 }

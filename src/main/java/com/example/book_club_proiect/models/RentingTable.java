@@ -38,6 +38,7 @@ public class RentingTable implements Serializable {
     @Column(nullable = false)
     private LocalDate return_date;
 
+    private Boolean return_date_extended;
 
 
 
