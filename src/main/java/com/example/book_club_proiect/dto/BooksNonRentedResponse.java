@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 public class BooksNonRentedResponse {
+    private Long book_id;
     private String book_title;
     private String author_fname;
     private String author_lname;

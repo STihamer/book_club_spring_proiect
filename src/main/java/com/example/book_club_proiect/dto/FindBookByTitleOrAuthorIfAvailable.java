@@ -16,7 +16,7 @@ public class FindBookByTitleOrAuthorIfAvailable {
 
     /*private String last_name;*/
 
-
+    private Long book_id;
     private String author_fname;
     private String author_lname;
     private String book_title;
