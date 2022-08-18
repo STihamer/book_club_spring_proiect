@@ -54,13 +54,4 @@ public class BooksController {
     }
 
 
-    @GetMapping("/title")
-    public List<Book> findBooksByTitleOrAuthorName(
-            @RequestParam(value = "book_title", required = false) String bookTitle,
-            @RequestParam(value = "author_fname", required = false) String authorFirstName,
-            @RequestParam(value = "author_lname", required = false) String authorLastName
-    ) {
-        return bookService.findByTitleOrAuthorName(bookTitle,authorFirstName,authorLastName);
-    }
-
 }

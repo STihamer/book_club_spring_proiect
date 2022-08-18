@@ -41,8 +41,4 @@ public class BookService {
         BeanUtils.copyProperties(book, existingBook, "id");
         return bookRepository.saveAndFlush(existingBook);
     }
-
-    public List<Book> findByTitleOrAuthorName(String bookTitle, String firstName, String lastName){
-        return bookRepository.findBooksByTitleOrAuthor(bookTitle, firstName, lastName);
-    }
 }

@@ -14,10 +14,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RentingTableService {
 
+    List<Book> foundBooks = new ArrayList<>();
     @Autowired
     private final RentingTableRepository rentingTableRepository;
 
@@ -86,7 +88,8 @@ public class RentingTableService {
 
     public List<RentingTable> findRentingTablesByBookTitleOrAuthorName(String title, String authorFirstName,
                                                                        String authorLastName) {
-        List<Book> foundBooks = bookRepository.findBooksByTitleOrAuthor(title, authorFirstName, authorLastName);
+
+        this.filterQueryByBookAndAuthorFirstNameAndLastName(title, authorFirstName, authorLastName);
         List<RentingTable> newRentingTableList = rentingTableRepository.findAll();
         List<RentingTable> filteredRentingTable = new ArrayList<>();
         for (RentingTable rt : newRentingTableList) {
@@ -98,4 +101,40 @@ public class RentingTableService {
         }
         return filteredRentingTable;
     }
+
+    public List<Book> filterQueryByBookAndAuthorFirstNameAndLastName(String title, String authorFirstName,
+                                                                     String authorLastName) {
+        List<Book> foundBooksByTitle = new ArrayList<>();
+        if (title.length() > 0) {
+            foundBooksByTitle = bookRepository.findBooksByTitle(title);
+        }
+        List<Book> foundBooksByAuthorFirstName = new ArrayList<>();
+        if (foundBooksByTitle.size() > 0 && authorFirstName.length() > 0) {
+            foundBooksByAuthorFirstName =
+                    foundBooksByTitle.stream().filter(element -> element.getAuthor_fname() == authorFirstName).collect(Collectors.toList());
+
+        } else if (authorFirstName.length() > 0) {
+            foundBooksByAuthorFirstName = bookRepository.findBooksByAuthorFirstName(authorFirstName);
+        }
+
+        List<Book> foundBooksByAuthorLastName = new ArrayList<>();
+        if (foundBooksByTitle.size() > 0 && foundBooksByAuthorFirstName.size() > 0 && authorLastName.length() > 0) {
+            foundBooksByAuthorLastName =
+                    foundBooksByAuthorFirstName.stream().filter(element -> element.getAuthor_lname() == authorLastName).collect(Collectors.toList());
+        } else if (foundBooksByTitle.size() > 0 && authorLastName.length() > 0) {
+            foundBooksByAuthorLastName =
+                    foundBooksByTitle.stream().filter(element -> element.getAuthor_lname() == authorLastName).collect(Collectors.toList());
+        } else if (authorLastName.length() > 0) {
+            foundBooksByAuthorLastName = bookRepository.findBooksByAuthorLastName(authorLastName);
+        }
+        if (foundBooksByAuthorLastName.size() > 0) {
+            foundBooks = foundBooksByAuthorLastName;
+        } else if (foundBooksByAuthorFirstName.size() > 0) {
+            foundBooks = foundBooksByAuthorFirstName;
+        } else if (foundBooksByTitle.size() > 0) {
+            foundBooks = foundBooksByTitle;
+        }
+        return foundBooks;
+    }
+
 }

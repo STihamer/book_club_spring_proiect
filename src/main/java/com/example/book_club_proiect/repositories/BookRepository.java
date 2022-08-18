@@ -18,12 +18,18 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             ":book_title")
     List<FindBookByTitleInRentingTable> findMyBokByGivenTitle(@Param("book_title") String str);
 
-    @Query("select b from books b where b.book_title =:book_title " +
-            " and (b.author_fname = :author_fname or b.author_lname = :author_lname) or (b.author_lname = " +
-            ":author_lname or b.author_fname = :author_fname) or b.book_title =:book_title ")
-    List<Book> findBooksByTitleOrAuthor(
-            @Param("book_title") String title,
-            @Param("author_fname") String author_fname,
+    @Query("select b from books b where b.book_title =:book_title")
+    List<Book> findBooksByTitle(
+            @Param("book_title") String title
+    );
+
+    @Query("select b from books b where b.author_fname =:author_fname")
+    List<Book> findBooksByAuthorFirstName(
+            @Param("author_fname") String author_fname
+    );
+
+    @Query("select b from books b where b.author_lname =:author_lname")
+    List<Book> findBooksByAuthorLastName(
             @Param("author_lname") String author_lname
     );
 
