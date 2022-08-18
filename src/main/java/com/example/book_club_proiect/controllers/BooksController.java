@@ -2,6 +2,8 @@ package com.example.book_club_proiect.controllers;
 
 
 import com.example.book_club_proiect.models.Book;
+import com.example.book_club_proiect.models.MyListing;
+import com.example.book_club_proiect.models.RentingTable;
 import com.example.book_club_proiect.services.BookService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,4 +56,10 @@ public class BooksController {
     }
 
 
+    @GetMapping("/findBooksByTitleOrAuthorName")
+    public List<Book> findBookByTitleOrByAuthorName(
+            @RequestParam(value = "searching", required = false) String searching
+    ) {
+        return bookService.findBookByTitleOrByAuthorName(searching);
+    }
 }

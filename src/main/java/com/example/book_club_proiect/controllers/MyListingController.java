@@ -1,6 +1,8 @@
 package com.example.book_club_proiect.controllers;
 
 import com.example.book_club_proiect.models.MyListing;
+import com.example.book_club_proiect.models.RentingTable;
+import com.example.book_club_proiect.services.BookService;
 import com.example.book_club_proiect.services.MyListingService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ public class MyListingController {
     @Autowired
     private final MyListingService myListingService;
 
-    public MyListingController(MyListingService myListingService) {
+    public MyListingController(MyListingService myListingService, BookService bookService) {
         this.myListingService = myListingService;
     }
 
@@ -52,5 +54,6 @@ public class MyListingController {
     public void deleteMyListingById(@PathVariable Long id) {
         myListingService.deleteMyListingById(id);
     }
+
 
 }

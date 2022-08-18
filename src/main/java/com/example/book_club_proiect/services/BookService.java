@@ -6,8 +6,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -37,8 +39,44 @@ public class BookService {
     }
 
     public Book updateBook(Long id, Book book) {
-       Book existingBook = bookRepository.findById(id).get();
+        Book existingBook = bookRepository.findById(id).get();
         BeanUtils.copyProperties(book, existingBook, "id");
         return bookRepository.saveAndFlush(existingBook);
+    }
+
+    public List<Book> findBookByTitleOrByAuthorName(String searching) {
+        List<Book> newBookList = new ArrayList<>();
+        List<Book> newBookList1 = new ArrayList<>();
+        List<Book> newBookList2 = new ArrayList<>();
+        List<Book> newBookList3 = new ArrayList<>();
+        newBookList = this.bookRepository.findAll();
+        if (searching.length() > 2) {
+            newBookList1 =
+                    newBookList.stream().filter(element -> element.getBook_title()
+                            .toLowerCase().contains(searching
+                                    .toLowerCase())).collect(Collectors.toList());
+
+
+        }
+        if (newBookList1.size() < 1 && searching.length() > 2) {
+            newBookList2 =
+                    newBookList.stream().filter(element -> element.getAuthor_fname()
+                            .toLowerCase().contains(searching.
+                                    toLowerCase())).collect(Collectors.toList());
+        }
+        if (newBookList2.size() < 1 && searching.length() > 2) {
+            newBookList3 =
+                    newBookList.stream().filter(element -> element.getAuthor_lname().
+                            toLowerCase().contains(searching.
+                                    toLowerCase())).collect(Collectors.toList());
+        }
+        if (newBookList1.size() > 0) {
+            return newBookList1;
+        } else if (newBookList2.size() > 0) {
+            return newBookList2;
+        } else if (newBookList3.size() > 0) {
+            return newBookList3;
+        }
+        return new ArrayList<>();
     }
 }
