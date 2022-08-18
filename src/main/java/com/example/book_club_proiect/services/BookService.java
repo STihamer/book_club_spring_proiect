@@ -1,7 +1,6 @@
 package com.example.book_club_proiect.services;
 
 import com.example.book_club_proiect.models.Book;
-import com.example.book_club_proiect.models.User;
 import com.example.book_club_proiect.repositories.BookRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +40,9 @@ public class BookService {
        Book existingBook = bookRepository.findById(id).get();
         BeanUtils.copyProperties(book, existingBook, "id");
         return bookRepository.saveAndFlush(existingBook);
+    }
+
+    public List<Book> findByTitleOrAuthorName(String bookTitle, String firstName, String lastName){
+        return bookRepository.findBooksByTitleOrAuthor(bookTitle, firstName, lastName);
     }
 }

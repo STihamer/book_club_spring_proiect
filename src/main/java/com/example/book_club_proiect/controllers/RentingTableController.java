@@ -1,6 +1,7 @@
 package com.example.book_club_proiect.controllers;
 
 
+import com.example.book_club_proiect.models.Book;
 import com.example.book_club_proiect.models.RentingTable;
 import com.example.book_club_proiect.services.RentingTableService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -56,5 +57,15 @@ public class RentingTableController {
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void deleteRentingTableById(@PathVariable Long id) {
         rentingTableService.deleteRentingTableById(id);
+    }
+
+
+    @GetMapping("/findBooksByTitleOrAuthorName")
+    public List<RentingTable> findBooksByTitleOrAuthorName(
+            @RequestParam(value = "book_title", required = false) String bookTitle,
+            @RequestParam(value = "author_fname", required = false) String authorFirstName,
+            @RequestParam(value = "author_lname", required = false) String authorLastName
+    ) {
+        return rentingTableService.findRentingTablesByBookTitleOrAuthorName(bookTitle,authorFirstName,authorLastName);
     }
 }

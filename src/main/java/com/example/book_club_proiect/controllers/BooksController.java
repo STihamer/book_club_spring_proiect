@@ -5,6 +5,7 @@ import com.example.book_club_proiect.models.Book;
 import com.example.book_club_proiect.services.BookService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,5 +54,13 @@ public class BooksController {
     }
 
 
+    @GetMapping("/title")
+    public List<Book> findBooksByTitleOrAuthorName(
+            @RequestParam(value = "book_title", required = false) String bookTitle,
+            @RequestParam(value = "author_fname", required = false) String authorFirstName,
+            @RequestParam(value = "author_lname", required = false) String authorLastName
+    ) {
+        return bookService.findByTitleOrAuthorName(bookTitle,authorFirstName,authorLastName);
+    }
 
 }

@@ -1,18 +1,17 @@
 package com.example.book_club_proiect.services;
 
 
-import com.example.book_club_proiect.models.RentingPeriods;
+import com.example.book_club_proiect.models.Book;
 import com.example.book_club_proiect.models.RentingTable;
-import com.example.book_club_proiect.models.User;
 import com.example.book_club_proiect.repositories.BookRepository;
 import com.example.book_club_proiect.repositories.RentingPeriodsRepository;
 import com.example.book_club_proiect.repositories.RentingTableRepository;
 import com.example.book_club_proiect.repositories.UserRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,5 +81,21 @@ public class RentingTableService {
 
     public void deleteRentingTableById(Long id) {
         rentingTableRepository.deleteById(id);
+    }
+
+
+    public List<RentingTable> findRentingTablesByBookTitleOrAuthorName(String title, String authorFirstName,
+                                                                       String authorLastName) {
+        List<Book> foundBooks = bookRepository.findBooksByTitleOrAuthor(title, authorFirstName, authorLastName);
+        List<RentingTable> newRentingTableList = rentingTableRepository.findAll();
+        List<RentingTable> filteredRentingTable = new ArrayList<>();
+        for (RentingTable rt : newRentingTableList) {
+            for (Book book : foundBooks) {
+                if (rt.getBook_id() == book.getBook_id()) {
+                    filteredRentingTable.add(rt);
+                }
+            }
+        }
+        return filteredRentingTable;
     }
 }
