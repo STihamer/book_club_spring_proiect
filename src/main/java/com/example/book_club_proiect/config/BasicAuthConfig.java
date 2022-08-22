@@ -14,7 +14,9 @@ public class BasicAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("matt").password("{noop}secret").authorities("ROLE_ADMIN");
+                .withUser("matt").password("{noop}secret").authorities("ROLE_ADMIN")
+                .and()
+                .withUser("jane").password("{noop}secret").authorities("ROLE_USER");
         //Todo: this password should be encoded
     }
 
