@@ -1,16 +1,12 @@
 package com.example.book_club_proiect.services;
 
-import com.example.book_club_proiect.models.Book;
-import com.example.book_club_proiect.models.RentingTable;
+
 import com.example.book_club_proiect.models.User;
 import com.example.book_club_proiect.repositories.RolesRepository;
 import com.example.book_club_proiect.repositories.UserRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +18,6 @@ public class UserService {
     @Autowired
     private final RolesRepository rolesRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     public UserService(UserRepository userRepository, RolesRepository rolesRepository) {
         this.userRepository = userRepository;
         this.rolesRepository = rolesRepository;
@@ -47,7 +41,7 @@ public class UserService {
         user.setUser_age(user_age);
         user.setUsername(username);
         user.setUser_email(user_email);
-        user.setUser_password(passwordEncoder.encode(user_password));
+        user.setUser_password(user_password);
         user.setRole_id(role_id);
         user.setRoles(rolesRepository.findById(role_id).get());
         return userRepository.saveAndFlush(user);

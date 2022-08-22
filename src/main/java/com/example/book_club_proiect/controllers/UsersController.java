@@ -45,19 +45,21 @@ public class UsersController {
 
     @PostMapping
     public User createUser(@RequestParam String first_name,
-                              @RequestParam String last_name,
-                              @RequestParam Integer user_age,
-                              @RequestParam String username,
-                              @RequestParam String user_email,
-                              @RequestParam String user_password,
-                              @RequestParam Long role_id) {
+                           @RequestParam String last_name,
+                           @RequestParam Integer user_age,
+                           @RequestParam String username,
+                           @RequestParam String user_email,
+                           @RequestParam String user_password,
+                           @RequestParam Long role_id) {
         return userService.createUser(
                 first_name, last_name, user_age, username, user_email, user_password, role_id);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public ResponseEntity updateUser(@PathVariable Long id, @RequestBody User user) {
+
+            return ResponseEntity.ok(userService.updateUser(id, user));
+
     }
 
 
