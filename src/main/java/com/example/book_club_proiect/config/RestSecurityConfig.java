@@ -1,6 +1,7 @@
 package com.example.book_club_proiect.config;
 
 import com.example.book_club_proiect.security.JWTAuthorizationFilter;
+import com.example.book_club_proiect.security.UsernamePWDAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,11 +14,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("matt").password("{noop}secret").authorities("ROLE_ADMIN")
-                .and()
-                .withUser("jane").password("{noop}secret").authorities("ROLE_USER");
+    UsernamePWDAuthenticationProvider usernamePWDAuthenticationProvider;
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(usernamePWDAuthenticationProvider);
         //Todo: this password should be encoded
     }
 
@@ -26,17 +27,19 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/api/basicAuth/**").permitAll()
-                .antMatchers("/api/basicAuth/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.OPTIONS, "api/basicAuth/**").permitAll()
+                .antMatchers("api/basicAuth/**").hasAnyRole("admin", "user")
 
                 .and().httpBasic();
+
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/books").permitAll()
-                .antMatchers(HttpMethod.GET, "api/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/api/users/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET,"/api/users").hasAnyRole("admin","user")
+                .antMatchers(HttpMethod.GET, "/api/books").hasAnyRole("admin","user")
+                .antMatchers("/api/users/**").hasRole("admin")
+                .antMatchers("/api/books/**").hasRole("admin")
                 .and()
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()));
 
