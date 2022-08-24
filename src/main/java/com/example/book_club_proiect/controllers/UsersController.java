@@ -7,9 +7,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/users")
@@ -28,6 +35,7 @@ public class UsersController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<User> getAll() {
+
         return userService.getAll();
     }
 
@@ -58,7 +66,24 @@ public class UsersController {
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public ResponseEntity updateUser(@PathVariable Long id, @RequestBody User user) {
 
-            return ResponseEntity.ok(userService.updateUser(id, user));
+        return ResponseEntity.ok(userService.updateUser(id, user));
 
+    }
+
+    @GetMapping("/currentUserRole")
+    public Map<String, String> getCurrentUsersRole(HttpServletResponse response) {
+        Collection<GrantedAuthority> roles =
+                (Collection<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        String role = "";
+        if (roles.size() > 0) {
+            GrantedAuthority ga = roles.iterator().next();
+            role = ga.getAuthority().substring(5);
+            System.out.println(role);
+        }
+        Map<String, String> results = new HashMap<>();
+
+        results.put("role", role);
+        System.out.println("roleeeeeeeeee" + results);
+        return results;
     }
 }

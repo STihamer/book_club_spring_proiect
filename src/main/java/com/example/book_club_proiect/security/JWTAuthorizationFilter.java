@@ -14,6 +14,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -31,8 +32,19 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String header = request.getHeader("Authorization");
-        if (header == null || !header.startsWith("Bearer")) {
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null || cookies.length == 0){
+            chain.doFilter(request, response);
+            return;
+        }
+
+        Cookie tokenCookie = null;
+        for(Cookie cookie: cookies){
+            if(cookie.getName().equals("token")){
+                tokenCookie = cookie;
+            }
+        }
+        if (tokenCookie == null) {
             chain.doFilter(request, response);
             return;
         }
@@ -41,13 +53,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(servletContext);
             jwtService = wac.getBean(JWTService.class);
         }
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(header);
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(tokenCookie.getValue());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(String header) {
-        String jwtToken = header.substring(7);
+    private UsernamePasswordAuthenticationToken getAuthentication(String jwtToken) {
+
         try {
             String payload = jwtService.validateToken(jwtToken);
             JsonParser parser = JsonParserFactory.getJsonParser();
