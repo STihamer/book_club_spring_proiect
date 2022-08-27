@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MyListingService {
@@ -30,7 +31,7 @@ public class MyListingService {
     }
 
     public List<MyListing> getAll() {
-        return myListingRepository.findAll();
+         return myListingRepository.findAll();
     }
 
     public Optional<MyListing> getById(Long id) {

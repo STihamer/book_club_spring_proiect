@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.HashMap;
@@ -71,19 +72,39 @@ public class UsersController {
     }
 
     @GetMapping("/currentUserRole")
-    public Map<String, String> getCurrentUsersRole(HttpServletResponse response) {
+    public Map<String, String> getCurrentUsersRole() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         Collection<GrantedAuthority> roles =
                 (Collection<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         String role = "";
         if (roles.size() > 0) {
             GrantedAuthority ga = roles.iterator().next();
             role = ga.getAuthority().substring(5);
-            System.out.println(role);
         }
         Map<String, String> results = new HashMap<>();
-
         results.put("role", role);
-        System.out.println("roleeeeeeeeee" + results);
         return results;
+    }
+
+    @GetMapping("/currentUserId")
+    public Map<String, Long> getCurrentUsersId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userRepository.findUserByUsername(auth.getName());
+        Long id = currentUser.getUser_id();
+        Map<String, Long> results = new HashMap<>();
+        results.put("id", id);
+        return results;
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("token", null);
+        cookie.setPath("/api");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        SecurityContextHolder.getContext().setAuthentication(null);
+        return "";
     }
 }
