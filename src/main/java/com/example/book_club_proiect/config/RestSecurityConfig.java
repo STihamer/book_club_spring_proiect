@@ -25,20 +25,26 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().disable()
+                .cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "api/basicAuth/**").permitAll()
-                .antMatchers("api/basicAuth/**").hasAnyRole("admin", "user")
-
-                .and().httpBasic();
+                .antMatchers(HttpMethod.GET, "api/users/currentUserRole").permitAll()
+                .antMatchers(HttpMethod.GET, "api/basicAuth/**").hasAnyRole("admin", "user")
+                .and().httpBasic()
+                .authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint());
 
         httpSecurity
-                .csrf().disable()
+                .cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+
                 .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole("admin", "user")
                 .antMatchers(HttpMethod.GET, "/api/rentingTables").hasAnyRole("admin", "user")
                 .antMatchers(HttpMethod.GET, "/api/rentingTables/**").hasAnyRole("admin", "user")
+                .antMatchers(HttpMethod.POST, "/api/users/**").hasAnyRole("admin", "user")
+                .antMatchers(HttpMethod.POST, "/api/rentingTables/**").hasAnyRole("admin", "user")
+                .antMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("admin")
+                .antMatchers(HttpMethod.DELETE, "/api/rentingTables/**").hasAnyRole("admin", "user")
                 .and()
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()));
 

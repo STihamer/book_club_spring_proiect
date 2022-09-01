@@ -3,12 +3,15 @@ package com.example.book_club_proiect.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.List;
 
@@ -18,15 +21,28 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@ApiModel(description = "All details about the user. ")
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
+    @ApiModelProperty(notes = "The first name can not contain numbers")
+    @Pattern(regexp = "[A-Za-z]{2,}", message = "The first name can not contain numbers")
     private String first_name;
+    @ApiModelProperty(notes = "The last name can not contain numbers")
+    @Pattern(regexp = "[A-Za-z]{2,}", message = "The Last name can not contain numbers")
     private String last_name;
     private Integer user_age;
+
+    @ApiModelProperty(notes = "username is unique")
+    @Column(unique = true)
     private String username;
+    @ApiModelProperty(notes = "The email must fulfill some requirements")
+    @Pattern(regexp = "^[a-z\\d._\\-]{3,25}@[a-z\\d\\-]{3,8}\\.[a-z]{2,3}$", message = "The user email " +
+            "must fulfill some requirements")
     private String user_email;
+
+    @ApiModelProperty(notes = "password need to contain at least a number, a lower case and an upper case")
     private String user_password;
     @Column(updatable = false, insertable = false)
     private Long role_id;

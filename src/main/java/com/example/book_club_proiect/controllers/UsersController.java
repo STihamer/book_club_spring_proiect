@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -53,11 +54,11 @@ public class UsersController {
     }
 
     @PostMapping
-    public User createUser(@RequestParam String first_name,
-                           @RequestParam String last_name,
+    public User createUser( @Valid @RequestParam String first_name,
+                            @Valid @RequestParam String last_name,
                            @RequestParam Integer user_age,
                            @RequestParam String username,
-                           @RequestParam String user_email,
+                           @Valid @RequestParam String user_email,
                            @RequestParam String user_password,
                            @RequestParam Long role_id) {
         return userService.createUser(
