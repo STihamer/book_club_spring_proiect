@@ -41,7 +41,7 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole("admin", "user")
                 .antMatchers(HttpMethod.GET, "/api/rentingTables").hasAnyRole("admin", "user")
                 .antMatchers(HttpMethod.GET, "/api/rentingTables/**").hasAnyRole("admin", "user")
-                .antMatchers(HttpMethod.POST, "/api/users/**").hasAnyRole("admin", "user")
+                .antMatchers(HttpMethod.POST, "/api/users/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/rentingTables/**").hasAnyRole("admin", "user")
                 .antMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("admin")
                 .antMatchers(HttpMethod.DELETE, "/api/rentingTables/**").hasAnyRole("admin", "user")

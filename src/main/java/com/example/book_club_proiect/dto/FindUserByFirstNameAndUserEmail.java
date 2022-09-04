@@ -1,7 +1,6 @@
 package com.example.book_club_proiect.dto;
 
 
-import com.example.book_club_proiect.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

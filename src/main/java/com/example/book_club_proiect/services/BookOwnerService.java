@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 public class BookOwnerService {
-    @Autowired
+    @Autowired //toDo -injection by constructor
     private final BookOwnerRepository book_ownerRepository;
 
     public BookOwnerService(BookOwnerRepository book_ownerRepository) {
@@ -31,7 +31,9 @@ public class BookOwnerService {
         return book_ownerRepository.findById(id);
     }
 
-    public BookOwner createBook_Owner(final BookOwner book_owner) {
+
+    // camelCase instead of underscore
+    public BookOwner createBook_Owner(BookOwner book_owner) {
         return book_ownerRepository.saveAndFlush(book_owner);
     }
 

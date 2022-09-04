@@ -4,6 +4,9 @@ import com.example.book_club_proiect.models.User;
 import com.example.book_club_proiect.repositories.UserRepository;
 import com.example.book_club_proiect.services.UserService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +44,7 @@ public class UsersController {
         return userService.getAll();
     }
 
+
     @GetMapping
     @RequestMapping("{id}")
     public Object getById(@PathVariable Long id) {
@@ -54,8 +58,8 @@ public class UsersController {
     }
 
     @PostMapping
-    public User createUser( @Valid @RequestParam String first_name,
-                            @Valid @RequestParam String last_name,
+    public User createUser(@Valid @RequestParam String first_name,
+                           @Valid @RequestParam String last_name,
                            @RequestParam Integer user_age,
                            @RequestParam String username,
                            @Valid @RequestParam String user_email,
@@ -107,5 +111,17 @@ public class UsersController {
         response.addCookie(cookie);
         SecurityContextHolder.getContext().setAuthentication(null);
         return "";
+    }
+
+    @PostMapping("/registration")
+    public User registerUser(@Valid @RequestParam String first_name,
+                             @Valid @RequestParam String last_name,
+                             @RequestParam Integer user_age,
+                             @RequestParam String username,
+                             @Valid @RequestParam String user_email,
+                             @RequestParam String user_password,
+                             @RequestParam Long role_id) {
+        return userService.createUser(
+                first_name, last_name, user_age, username, user_email, user_password, role_id);
     }
 }

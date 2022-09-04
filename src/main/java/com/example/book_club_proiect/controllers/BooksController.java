@@ -1,6 +1,7 @@
 package com.example.book_club_proiect.controllers;
 
 
+import com.example.book_club_proiect.dto.BookDTO;
 import com.example.book_club_proiect.models.Book;
 import com.example.book_club_proiect.models.MyListing;
 import com.example.book_club_proiect.models.RentingTable;
@@ -20,7 +21,6 @@ import java.util.List;
 
 public class BooksController {
 
-    @Autowired
     private final BookService bookService;
 
     public BooksController(BookService bookService) {
@@ -29,8 +29,8 @@ public class BooksController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Book> getAll() {
-        return bookService.getAll();
+    public ResponseEntity<List<BookDTO>> getAll() {
+        return ResponseEntity.ok(bookService.getAll());
     }
 
     @GetMapping

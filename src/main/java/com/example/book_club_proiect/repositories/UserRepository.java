@@ -12,7 +12,8 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query(value = "select new com.example.book_club_proiect.dto.FindUserByFirstNameAndUserEmail(u.first_name, u" +
+    @Query(value = "select new com.example.book_club_proiect.dto.FindUserByFirstNameAndUserEmail(u" +
+            ".first_name, u" +
             ".last_name, u.user_age, u.username, u.user_email) from" +
             " users u where" +
             " u.first_name = :first_name and " +

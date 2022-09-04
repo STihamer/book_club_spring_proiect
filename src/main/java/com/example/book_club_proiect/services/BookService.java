@@ -1,9 +1,10 @@
 package com.example.book_club_proiect.services;
 
+import com.example.book_club_proiect.dto.BookDTO;
+import com.example.book_club_proiect.mapper.BookMapper;
 import com.example.book_club_proiect.models.Book;
 import com.example.book_club_proiect.repositories.BookRepository;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,15 +15,16 @@ import java.util.stream.Collectors;
 @Service
 public class BookService {
 
-    @Autowired
+    private final BookMapper bookMapper;
     private final BookRepository bookRepository;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookMapper bookMapper, BookRepository bookRepository) {
+        this.bookMapper = bookMapper;
         this.bookRepository = bookRepository;
     }
 
-    public List<Book> getAll() {
-        return bookRepository.findAll();
+    public List<BookDTO> getAll() {
+        return bookRepository.findAll().stream().map(bookMapper::toDto).collect(Collectors.toList());
     }
 
     public Optional<Book> getById(Long id) {

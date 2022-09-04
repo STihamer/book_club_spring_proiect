@@ -18,7 +18,8 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Book implements Serializable {
+//toDo -serializable out, collections are final
+public class Book implements Serializable  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
