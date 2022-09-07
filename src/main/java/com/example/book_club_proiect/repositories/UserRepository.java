@@ -2,6 +2,7 @@ package com.example.book_club_proiect.repositories;
 
 import com.example.book_club_proiect.dto.FindUserByFirstNameAndUserEmail;
 import com.example.book_club_proiect.dto.GetMyBooksAndRentingPersonAndReturningDay;
+import com.example.book_club_proiect.models.Book;
 import com.example.book_club_proiect.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,5 +36,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findUserByUsername(String username);
 
 
+    @Query("select u from users u where u.username = ?1")
+    List<User> findUsersByUsername(String title);
 
 }

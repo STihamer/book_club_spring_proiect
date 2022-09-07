@@ -1,5 +1,6 @@
 package com.example.book_club_proiect.controllers;
 
+import com.example.book_club_proiect.dto.BookOwnerDTO;
 import com.example.book_club_proiect.models.BookOwner;
 import com.example.book_club_proiect.services.BookOwnerService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class BookOwnerController {
 
-    @Autowired
+
     private final BookOwnerService bookOwnerService;
 
 
@@ -26,8 +27,9 @@ public class BookOwnerController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<BookOwner> getAll() {
-        return bookOwnerService.getAll();
+    public ResponseEntity<List<BookOwnerDTO>> getAll() {
+
+        return  ResponseEntity.ok(bookOwnerService.getAll());
     }
 
 
@@ -44,8 +46,12 @@ public class BookOwnerController {
     }
 
     @PostMapping
-    public BookOwner createBook(@RequestBody final BookOwner book_owner) {
-        return bookOwnerService.createBook_Owner(book_owner);
+    public ResponseEntity createBook(@RequestBody  BookOwnerDTO createDTO) {
+        try {
+            return ResponseEntity.ok(bookOwnerService.createBookOwner(createDTO));
+        } catch (UnsupportedOperationException exception) {
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)

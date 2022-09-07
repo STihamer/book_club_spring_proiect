@@ -13,12 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
 
-    private Long user_id;
-    private String first_name;
-    private String last_name;
-    private Integer user_age;
+    private Long userId;
+    private String firstName;
+    private String lastName;
+    private Integer userAge;
     private String username;
-    private String user_email;
-    private Long role_id;
-    private Roles roles;
+    private String userEmail;
+    private Long roleId;
 }

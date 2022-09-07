@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BookOwnerDTO {
     private Long id;
-    private Long book_id;
-    private Long user_id;
+    private Long bookId;
+    private Long userId;
 }

@@ -15,10 +15,10 @@ import java.time.LocalDate;
 public class RentingTableDTO {
 
     private Long id;
-    private Long borrowed_by;
-    private Long book_id;
-    private LocalDate borrowed_date;
-    private Long renting_period;
-    private LocalDate return_date;
-    private Boolean return_date_extended;
+    private Long borrowedBy;
+    private Long bookId;
+    private LocalDate borrowedDate;
+    private Long rentingPeriod;
+    private LocalDate returnDate;
+    private Boolean returnDateExtended;
 }

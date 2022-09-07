@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WaitingListDTO {
     private Long id;
-    private Long user_id;
-    private Long book_for_reading;
+    private Long userId;
+    private Long bookForReading;
     private Boolean finished;
 }

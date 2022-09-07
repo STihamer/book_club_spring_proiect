@@ -1,5 +1,6 @@
 package com.example.book_club_proiect.controllers;
 
+import com.example.book_club_proiect.dto.UserDTO;
 import com.example.book_club_proiect.models.User;
 import com.example.book_club_proiect.repositories.UserRepository;
 import com.example.book_club_proiect.services.UserService;
@@ -39,17 +40,17 @@ public class UsersController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<User> getAll() {
+    public ResponseEntity<List<UserDTO>> getAll() {
 
-        return userService.getAll();
+        return ResponseEntity.ok(userService.getAll());
     }
 
 
     @GetMapping
     @RequestMapping("{id}")
     public Object getById(@PathVariable Long id) {
-        return userService.getById(id).isPresent() ? userService.getById(id).get() :
-                new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return  ResponseEntity.ok(userService.getById(id).isPresent() ? userService.getById(id).get() :
+                new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
@@ -58,21 +59,25 @@ public class UsersController {
     }
 
     @PostMapping
-    public User createUser(@Valid @RequestParam String first_name,
+    public ResponseEntity createUser(@Valid @RequestParam String first_name,
                            @Valid @RequestParam String last_name,
                            @RequestParam Integer user_age,
                            @RequestParam String username,
                            @Valid @RequestParam String user_email,
                            @RequestParam String user_password,
                            @RequestParam Long role_id) {
-        return userService.createUser(
-                first_name, last_name, user_age, username, user_email, user_password, role_id);
+        try{
+            return ResponseEntity.ok( userService.createUser(
+                first_name, last_name, user_age, username, user_email, user_password, role_id));
+        }catch(UnsupportedOperationException exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
 
-        return ResponseEntity.ok(userService.updateUser(id, user));
+        return ResponseEntity.ok(userService.updateUser(id, userDTO));
 
     }
 

@@ -9,13 +9,23 @@ import org.springframework.stereotype.Component;
 public class BookMapperImpl implements BookMapper {
     @Override
     public BookDTO toDto(Book entity) {
-        BookDTO dto = BookDTO.builder()
+        return BookDTO.builder()
                 .bookId(entity.getBook_id())
                 .bookTitle(entity.getBook_title())
                 .authorFirstName(entity.getAuthor_fname())
                 .authorLastName(entity.getAuthor_lname())
                 .publishedYear(entity.getPublished())
                 .build();
-        return dto;
+    }
+
+    @Override
+    public Book toEntity(BookDTO createDTO) {
+        return Book.builder()
+                .book_id(createDTO.getBookId())
+                .book_title(createDTO.getBookTitle())
+                .author_fname(createDTO.getAuthorFirstName())
+                .author_lname(createDTO.getAuthorLastName())
+                .published(createDTO.getPublishedYear())
+                .build();
     }
 }

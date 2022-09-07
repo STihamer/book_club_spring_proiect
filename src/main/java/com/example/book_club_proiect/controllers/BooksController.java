@@ -2,13 +2,8 @@ package com.example.book_club_proiect.controllers;
 
 
 import com.example.book_club_proiect.dto.BookDTO;
-import com.example.book_club_proiect.models.Book;
-import com.example.book_club_proiect.models.MyListing;
-import com.example.book_club_proiect.models.RentingTable;
 import com.example.book_club_proiect.services.BookService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,25 +36,37 @@ public class BooksController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void deleteBookById(@PathVariable Long id) {bookService.deleteBookById(id);
+    public void deleteBookById(@PathVariable Long id) {
+        bookService.deleteBookById(id);
     }
 
     @PostMapping
-    public Book createBook(@RequestBody final Book book) {
-        return bookService.createBook(book);
+    public ResponseEntity createBook(@RequestBody BookDTO createDTO) {
+        try {
+            return ResponseEntity.ok(bookService.createBook(createDTO));
+        } catch (UnsupportedOperationException exception) {
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
-        return bookService.updateBook(id, book);
+    public ResponseEntity updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO) {
+        if (id.equals(bookDTO.getBookId())) {
+            try {
+                return ResponseEntity.ok(bookService.updateBook(id, bookDTO));
+            } catch (UnsupportedOperationException exception) {
+                return ResponseEntity.badRequest().body(exception.getMessage());
+            }
+        }
+        return ResponseEntity.badRequest().body("The id is not correct");
     }
 
 
     @GetMapping("/findBooksByTitleOrAuthorName")
-    public List<Book> findBookByTitleOrByAuthorName(
+    public ResponseEntity<List<BookDTO>> findBookByTitleOrByAuthorName(
             @RequestParam(value = "searching", required = false) String searching
     ) {
-        return bookService.findBookByTitleOrByAuthorName(searching);
+        return ResponseEntity.ok(bookService.findBookByTitleOrByAuthorName(searching));
     }
 }

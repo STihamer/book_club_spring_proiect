@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
@@ -33,5 +34,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             @Param("author_lname") String author_lname
     );
 
-
+    @Query("select b from books b where b.book_title = ?1")
+    Boolean existsByBook_title(String book_title);
 }

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MyListingDTO {
     private Long id;
-    private Long reading_person;
-    private Long book_title;
+    private Long readingPerson;
+    private Long bookTitle;
 
 }

@@ -4,7 +4,6 @@ import com.example.book_club_proiect.dto.BookDTO;
 import com.example.book_club_proiect.mapper.BookMapper;
 import com.example.book_club_proiect.models.Book;
 import com.example.book_club_proiect.repositories.BookRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,34 +26,56 @@ public class BookService {
         return bookRepository.findAll().stream().map(bookMapper::toDto).collect(Collectors.toList());
     }
 
-    public Optional<Book> getById(Long id) {
-
-        return bookRepository.findById(id);
+    public Optional<BookDTO> getById(Long id) {
+        Book book = bookRepository.findById(id).get();
+        BookDTO bookDTO = bookMapper.toDto(book);
+        return Optional.of(bookDTO);
     }
 
-    public Book createBook(final Book book) {
-        return bookRepository.saveAndFlush(book);
+    public BookDTO createBook(BookDTO createDTO) throws UnsupportedOperationException {
+
+        List<Book> books = bookRepository.findBooksByTitle(createDTO.getBookTitle());
+        if(books.size() > 0){
+
+            throw new UnsupportedOperationException(
+                    "A book with this title  : " + createDTO.getBookTitle() + " already exists");
+        }
+
+        Book bookToSave = bookMapper.toEntity(createDTO);
+        Book savedBook = bookRepository.save(bookToSave);
+        return bookMapper.toDto(savedBook);
+
     }
 
     public void deleteBookById(Long id) {
         bookRepository.deleteById(id);
     }
 
-    public Book updateBook(Long id, Book book) {
-        Book existingBook = bookRepository.findById(id).get();
-        BeanUtils.copyProperties(book, existingBook, "id");
-        return bookRepository.saveAndFlush(existingBook);
+    public BookDTO updateBook(Long id, BookDTO bookToBeUpdated) throws UnsupportedOperationException {
+        Optional<Book> oldBookOptional = bookRepository.findById(id);
+        if (oldBookOptional.isPresent()) {
+            Book oldBook = oldBookOptional.get();
+            oldBook.setAuthor_fname(bookToBeUpdated.getAuthorFirstName());
+            oldBook.setAuthor_lname(bookToBeUpdated.getAuthorLastName());
+            oldBook.setBook_title(bookToBeUpdated.getBookTitle());
+            oldBook.setPublished(bookToBeUpdated.getPublishedYear());
+            Book savedBook = bookRepository.save(oldBook);
+            BookDTO bookDTO = bookMapper.toDto(savedBook);
+            return bookDTO;
+        } else {
+            throw new UnsupportedOperationException("Invalid id " + bookToBeUpdated.getBookId());
+        }
     }
 
-    public List<Book> findBookByTitleOrByAuthorName(String searching) {
-        List<Book> newBookList = new ArrayList<>();
-        List<Book> newBookList1 = new ArrayList<>();
-        List<Book> newBookList2 = new ArrayList<>();
-        List<Book> newBookList3 = new ArrayList<>();
-        newBookList = this.bookRepository.findAll();
+    public List<BookDTO> findBookByTitleOrByAuthorName(String searching) {
+        List<BookDTO> newBookList = new ArrayList<>();
+        List<BookDTO> newBookList1 = new ArrayList<>();
+        List<BookDTO> newBookList2 = new ArrayList<>();
+        List<BookDTO> newBookList3 = new ArrayList<>();
+        newBookList = this.bookRepository.findAll().stream().map(bookMapper::toDto).collect(Collectors.toList());
         if (searching.length() > 2) {
             newBookList1 =
-                    newBookList.stream().filter(element -> element.getBook_title()
+                    newBookList.stream().filter(element -> element.getBookTitle()
                             .toLowerCase().contains(searching
                                     .toLowerCase())).collect(Collectors.toList());
 
@@ -62,13 +83,13 @@ public class BookService {
         }
         if (newBookList1.size() < 1 && searching.length() > 2) {
             newBookList2 =
-                    newBookList.stream().filter(element -> element.getAuthor_fname()
+                    newBookList.stream().filter(element -> element.getAuthorFirstName()
                             .toLowerCase().contains(searching.
                                     toLowerCase())).collect(Collectors.toList());
         }
         if (newBookList2.size() < 1 && searching.length() > 2) {
             newBookList3 =
-                    newBookList.stream().filter(element -> element.getAuthor_lname().
+                    newBookList.stream().filter(element -> element.getAuthorLastName().
                             toLowerCase().contains(searching.
                                     toLowerCase())).collect(Collectors.toList());
         }

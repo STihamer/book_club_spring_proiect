@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class RentingPeriodsDTO {
 
     private Long id;
-    private Long renting_period;
+    private Long rentingPeriod;
 }
