@@ -21,10 +21,10 @@ public class Book implements Serializable  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long book_id;
-    private String book_title;
-    private String author_fname;
-    private String author_lname;
+    private Long bookId;
+    private String bookTitle;
+    private String authorFname;
+    private String authorLname;
     private Integer published;
 
     @ManyToMany

@@ -5,10 +5,6 @@ import com.example.book_club_proiect.models.User;
 import com.example.book_club_proiect.repositories.UserRepository;
 import com.example.book_club_proiect.services.UserService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,10 +24,10 @@ import java.util.Map;
 @RequestMapping("api/users")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UsersController {
-    @Autowired
+
     private final UserService userService;
 
-    @Autowired
+
     private final UserRepository userRepository;
 
     public UsersController(UserService userService, UserRepository userRepository) {
@@ -49,27 +45,32 @@ public class UsersController {
     @GetMapping
     @RequestMapping("{id}")
     public Object getById(@PathVariable Long id) {
-        return  ResponseEntity.ok(userService.getById(id).isPresent() ? userService.getById(id).get() :
+        return ResponseEntity.ok(userService.getById(id).isPresent() ? userService.getById(id).get() :
                 new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void deleteUserById(@PathVariable Long id) {
-        userService.deleteUserById(id);
+    public ResponseEntity deleteUserById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(userService.deleteUserById(id));
+        } catch (UnsupportedOperationException exception) {
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
+
     }
 
     @PostMapping
     public ResponseEntity createUser(@Valid @RequestParam String first_name,
-                           @Valid @RequestParam String last_name,
-                           @RequestParam Integer user_age,
-                           @RequestParam String username,
-                           @Valid @RequestParam String user_email,
-                           @RequestParam String user_password,
-                           @RequestParam Long role_id) {
-        try{
-            return ResponseEntity.ok( userService.createUser(
-                first_name, last_name, user_age, username, user_email, user_password, role_id));
-        }catch(UnsupportedOperationException exception){
+                                     @Valid @RequestParam String last_name,
+                                     @RequestParam Integer user_age,
+                                     @RequestParam String username,
+                                     @Valid @RequestParam String user_email,
+                                     @RequestParam String user_password,
+                                     @RequestParam Long role_id) {
+        try {
+            return ResponseEntity.ok(userService.createUser(
+                    first_name, last_name, user_age, username, user_email, user_password, role_id));
+        } catch (UnsupportedOperationException exception) {
             return ResponseEntity.badRequest().body(exception.getMessage());
         }
     }

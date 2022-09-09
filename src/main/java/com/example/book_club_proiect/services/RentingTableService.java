@@ -94,7 +94,7 @@ public class RentingTableService {
         List<RentingTable> filteredRentingTable = new ArrayList<>();
         for (RentingTable rt : newRentingTableList) {
             for (Book book : foundBooks) {
-                if (rt.getBook_id() == book.getBook_id()) {
+                if (rt.getBook_id() == book.getBookId()) {
                     filteredRentingTable.add(rt);
                 }
             }
@@ -111,7 +111,7 @@ public class RentingTableService {
         List<Book> foundBooksByAuthorFirstName = new ArrayList<>();
         if (foundBooksByTitle.size() > 0 && authorFirstName.length() > 0) {
             foundBooksByAuthorFirstName =
-                    foundBooksByTitle.stream().filter(element -> element.getAuthor_fname() == authorFirstName).collect(Collectors.toList());
+                    foundBooksByTitle.stream().filter(element -> element.getAuthorFname() == authorFirstName).collect(Collectors.toList());
 
         } else if (authorFirstName.length() > 0) {
             foundBooksByAuthorFirstName = bookRepository.findBooksByAuthorFirstName(authorFirstName);
@@ -120,10 +120,10 @@ public class RentingTableService {
         List<Book> foundBooksByAuthorLastName = new ArrayList<>();
         if (foundBooksByTitle.size() > 0 && foundBooksByAuthorFirstName.size() > 0 && authorLastName.length() > 0) {
             foundBooksByAuthorLastName =
-                    foundBooksByAuthorFirstName.stream().filter(element -> element.getAuthor_lname() == authorLastName).collect(Collectors.toList());
+                    foundBooksByAuthorFirstName.stream().filter(element -> element.getAuthorLname() == authorLastName).collect(Collectors.toList());
         } else if (foundBooksByTitle.size() > 0 && authorLastName.length() > 0) {
             foundBooksByAuthorLastName =
-                    foundBooksByTitle.stream().filter(element -> element.getAuthor_lname() == authorLastName).collect(Collectors.toList());
+                    foundBooksByTitle.stream().filter(element -> element.getAuthorLname() == authorLastName).collect(Collectors.toList());
         } else if (authorLastName.length() > 0) {
             foundBooksByAuthorLastName = bookRepository.findBooksByAuthorLastName(authorLastName);
         }

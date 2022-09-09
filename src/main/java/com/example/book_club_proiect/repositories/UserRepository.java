@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     @Query(value = "SELECT new com.example.book_club_proiect.dto.GetMyBooksAndRentingPersonAndReturningDay" +
-            "(d.first_name, d.last_name, c.book_title, e.return_date  ) "
+            "(d.first_name, d.last_name, c.bookTitle, e.return_date  ) "
             + "FROM users d  JOIN d.rentingTableList e join e.books c where d.first_name = :first_name and d" +
             ".last_name" +
             " = :last_name")

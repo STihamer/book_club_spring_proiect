@@ -10,10 +10,10 @@ public class BookMapperImpl implements BookMapper {
     @Override
     public BookDTO toDto(Book entity) {
         return BookDTO.builder()
-                .bookId(entity.getBook_id())
-                .bookTitle(entity.getBook_title())
-                .authorFirstName(entity.getAuthor_fname())
-                .authorLastName(entity.getAuthor_lname())
+                .bookId(entity.getBookId())
+                .bookTitle(entity.getBookTitle())
+                .authorFirstName(entity.getAuthorFname())
+                .authorLastName(entity.getAuthorLname())
                 .publishedYear(entity.getPublished())
                 .build();
     }
@@ -21,10 +21,10 @@ public class BookMapperImpl implements BookMapper {
     @Override
     public Book toEntity(BookDTO createDTO) {
         return Book.builder()
-                .book_id(createDTO.getBookId())
-                .book_title(createDTO.getBookTitle())
-                .author_fname(createDTO.getAuthorFirstName())
-                .author_lname(createDTO.getAuthorLastName())
+                .bookId(createDTO.getBookId())
+                .bookTitle(createDTO.getBookTitle())
+                .authorFname(createDTO.getAuthorFirstName())
+                .authorLname(createDTO.getAuthorLastName())
                 .published(createDTO.getPublishedYear())
                 .build();
     }

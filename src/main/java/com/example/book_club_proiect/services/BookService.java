@@ -55,9 +55,9 @@ public class BookService {
         Optional<Book> oldBookOptional = bookRepository.findById(id);
         if (oldBookOptional.isPresent()) {
             Book oldBook = oldBookOptional.get();
-            oldBook.setAuthor_fname(bookToBeUpdated.getAuthorFirstName());
-            oldBook.setAuthor_lname(bookToBeUpdated.getAuthorLastName());
-            oldBook.setBook_title(bookToBeUpdated.getBookTitle());
+            oldBook.setAuthorFname(bookToBeUpdated.getAuthorFirstName());
+            oldBook.setAuthorLname(bookToBeUpdated.getAuthorLastName());
+            oldBook.setBookTitle(bookToBeUpdated.getBookTitle());
             oldBook.setPublished(bookToBeUpdated.getPublishedYear());
             Book savedBook = bookRepository.save(oldBook);
             BookDTO bookDTO = bookMapper.toDto(savedBook);

@@ -1,10 +1,11 @@
 package com.example.book_club_proiect.services;
 
+import com.example.book_club_proiect.dto.MyListingDTO;
+import com.example.book_club_proiect.mapper.MyListingMapper;
 import com.example.book_club_proiect.models.MyListing;
 import com.example.book_club_proiect.repositories.BookRepository;
 import com.example.book_club_proiect.repositories.MyListingRepository;
 import com.example.book_club_proiect.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,32 +15,42 @@ import java.util.stream.Collectors;
 
 @Service
 public class MyListingService {
-    @Autowired
+
+    private final MyListingMapper myListingMapper;
     private final MyListingRepository myListingRepository;
 
-    @Autowired
+
     private final UserRepository userRepository;
 
-    @Autowired
     private final BookRepository bookRepository;
 
-    public MyListingService(MyListingRepository myListingRepository, UserRepository userRepository,
+    public MyListingService(MyListingMapper myListingMapper, MyListingRepository myListingRepository, UserRepository userRepository,
                             BookRepository bookRepository) {
+        this.myListingMapper = myListingMapper;
         this.myListingRepository = myListingRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
     }
 
-    public List<MyListing> getAll() {
-         return myListingRepository.findAll();
+    public List<MyListingDTO> getAll() {
+        return myListingRepository.findAll().stream().map(myListingMapper::toDto).collect(Collectors.toList());
     }
 
-    public Optional<MyListing> getById(Long id) {
-
-        return myListingRepository.findById(id);
+    public Optional<MyListingDTO> getById(Long id) {
+        MyListing myListing = myListingRepository.findById(id).get();
+        return Optional.of(myListingMapper.toDto(myListing));
     }
 
-    public MyListing createMyListing(Long reading_person, Long book_title) {
+    public MyListing createMyListing(Long reading_person, Long book_title) throws UnsupportedOperationException {
+
+        List<MyListing> myListings =
+                myListingRepository.findMyListingsByReading_personAndAndBook_title(book_title, reading_person);
+        if (myListings.size() > 0) {
+            throw new UnsupportedOperationException(
+                    "You have already introduced this book with this user in your listing. Please choose another " +
+                            "title or user"
+            );
+        }
         MyListing myListing = new MyListing();
         myListing.setReading_person(reading_person);
         myListing.setBook_title(book_title);
@@ -51,7 +62,7 @@ public class MyListingService {
     public void deleteFromMyListing(String book_title, String first_name, String last_name) {
         List<MyListing> operatedList = new ArrayList<>();
         myListingRepository.findAll().stream()
-                .filter(e -> e.getBooks().getBook_title().equals(book_title))
+                .filter(e -> e.getBooks().getBookTitle().equals(book_title))
                 .filter(e -> e.getUsers().getFirst_name().equals(first_name))
                 .filter(e -> e.getUsers().getLast_name().equals(last_name))
                 .forEach(e -> operatedList.add(e));

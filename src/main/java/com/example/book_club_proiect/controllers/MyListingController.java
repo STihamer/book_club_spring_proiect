@@ -1,11 +1,9 @@
 package com.example.book_club_proiect.controllers;
 
-import com.example.book_club_proiect.models.MyListing;
-import com.example.book_club_proiect.models.RentingTable;
+import com.example.book_club_proiect.dto.MyListingDTO;
 import com.example.book_club_proiect.services.BookService;
 import com.example.book_club_proiect.services.MyListingService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +15,17 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class MyListingController {
 
-    @Autowired
+
     private final MyListingService myListingService;
 
-    public MyListingController(MyListingService myListingService, BookService bookService) {
+    public MyListingController(MyListingService myListingService) {
         this.myListingService = myListingService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<MyListing> getAll() {
-        return myListingService.getAll();
+    public ResponseEntity<List<MyListingDTO>> getAll() {
+
+        return ResponseEntity.ok(myListingService.getAll());
     }
 
     @GetMapping
@@ -38,8 +37,12 @@ public class MyListingController {
 
 
     @PostMapping
-    public MyListing createMyListing(@RequestParam Long reading_person, @RequestParam Long book_title) {
-        return myListingService.createMyListing(reading_person, book_title);
+    public ResponseEntity createMyListing(@RequestParam Long reading_person, @RequestParam Long book_title) {
+        try {
+            return ResponseEntity.ok(myListingService.createMyListing(reading_person, book_title));
+        } catch (UnsupportedOperationException exception) {
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 
     @RequestMapping(value = "/api/deleteMyListing", method = RequestMethod.DELETE)
@@ -47,7 +50,7 @@ public class MyListingController {
             @RequestParam String book_title,
             @RequestParam String first_name,
             @RequestParam String last_name) {
-       myListingService.deleteFromMyListing(book_title, first_name, last_name);
+        myListingService.deleteFromMyListing(book_title, first_name, last_name);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)

@@ -2,6 +2,7 @@ package com.example.book_club_proiect.repositories;
 
 import com.example.book_club_proiect.dto.BooksNonRentedResponse;
 import com.example.book_club_proiect.dto.FindBookByTitleOrAuthorIfAvailable;
+import com.example.book_club_proiect.models.BookOwner;
 import com.example.book_club_proiect.models.RentingTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,9 +12,9 @@ import java.util.List;
 
 public interface RentingTableRepository extends JpaRepository<RentingTable, Long> {
 
-    @Query(value = "SELECT new com.example.book_club_proiect.dto.BooksNonRentedResponse(d.book_id, d.book_title, d" +
-            ".author_fname," +
-            " d.author_lname, " +
+    @Query(value = "SELECT new com.example.book_club_proiect.dto.BooksNonRentedResponse(d.bookId, d.bookTitle, d" +
+            ".authorFname," +
+            " d.authorLname, " +
             " e" +
             ".return_date) "
             + "FROM books d Left JOIN d.rentingTableList e where e.return_date is null")
@@ -21,9 +22,9 @@ public interface RentingTableRepository extends JpaRepository<RentingTable, Long
 
 
     @Query(value = "SELECT new com.example.book_club_proiect.dto.FindBookByTitleOrAuthorIfAvailable" +
-            "( d.book_id, d.author_fname, d.author_lname, d.book_title, c.return_date) FROM books d join d" +
+            "( d.bookId, d.authorFname, d.authorLname, d.bookTitle, c.return_date) FROM books d join d" +
             ".rentingTableList c " +
-            "where d.book_title = :book_title or d.author_fname = :author_fname or d.author_lname = :author_lname")
+            "where d.bookTitle = :book_title or d.authorFname = :author_fname or d.authorLname = :author_lname")
     List<FindBookByTitleOrAuthorIfAvailable> findAllBookByAuthorNameOrBookTitle
             (@Param("book_title") String book_title,
              @Param("author_fname") String author_fname,
@@ -33,4 +34,6 @@ public interface RentingTableRepository extends JpaRepository<RentingTable, Long
     RentingTable findRentingTableByIdAndChangeRenting_period(
             @Param("renting_table_id") Long renting_table_id);
 
+    @Query("select rt from renting_table rt where rt.borrowed_by = ?1")
+    List<RentingTable> findRentingTablesByBorrowed_by(Long id);
 }
