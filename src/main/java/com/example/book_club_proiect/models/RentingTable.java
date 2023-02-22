@@ -1,44 +1,39 @@
 package com.example.book_club_proiect.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity(name = "renting_table")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class RentingTable implements Serializable {
+public class RentingTable  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(updatable = false, insertable = false)
-    private Long borrowed_by;
+    @Column(updatable = false, insertable = false, name ="borrowed_by")
+    private Long borrowedBy;
 
-    @Column(unique = true,updatable = false, insertable = false)
-    private Long book_id;
+    @Column(unique = true,updatable = false, insertable = false, name ="book_id")
+    private Long bookId;
 
-    @Column(nullable = false)
-    private LocalDate  borrowed_date;
+    @Column(nullable = false, name ="borrowed_date")
+    private LocalDate borrowedDate;
 
-    @Column(updatable = false, insertable = false)
-    private Long renting_period;
+    @Column(updatable = false, insertable = false, name ="renting_period")
+    private Long rentingPeriod;
 
-    @Column(nullable = false)
-    private LocalDate return_date;
-
-    private Boolean return_date_extended;
+    @Column(nullable = false, name ="return_date")
+    private LocalDate returnDate;
+    @Column(nullable = false, name ="return_date_extended")
+    private Boolean returnDateExtended;
 
 
 

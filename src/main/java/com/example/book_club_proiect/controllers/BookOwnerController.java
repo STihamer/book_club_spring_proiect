@@ -41,8 +41,14 @@ public class BookOwnerController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void deleteById(@PathVariable Long id) {
-        bookOwnerService.deleteById(id);
+    public ResponseEntity deleteById(@PathVariable Long id) {
+        try{
+            return ResponseEntity.ok(bookOwnerService.deleteById(id));
+        }
+        catch (UnsupportedOperationException exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
+
     }
 
     @PostMapping

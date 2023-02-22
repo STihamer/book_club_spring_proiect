@@ -4,7 +4,10 @@ package com.example.book_club_proiect.services;
 import com.example.book_club_proiect.dto.BookOwnerDTO;
 import com.example.book_club_proiect.mapper.BookOwnerMapper;
 import com.example.book_club_proiect.models.BookOwner;
+import com.example.book_club_proiect.models.WaitingList;
 import com.example.book_club_proiect.repositories.BookOwnerRepository;
+import com.example.book_club_proiect.repositories.MyListingRepository;
+import com.example.book_club_proiect.repositories.WaitingListRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +19,13 @@ import java.util.stream.Collectors;
 public class BookOwnerService {
 
     private final BookOwnerRepository bookOwnerRepository;
+    private final WaitingListRepository waitingListRepository;
     private final BookOwnerMapper bookOwnerMapper;
 
-    public BookOwnerService(BookOwnerRepository bookOwnerRepository, BookOwnerMapper bookOwnerMapper) {
+    public BookOwnerService(BookOwnerRepository bookOwnerRepository, MyListingRepository myListingRepository,
+                            WaitingListRepository waitingListRepository, BookOwnerMapper bookOwnerMapper) {
         this.bookOwnerRepository = bookOwnerRepository;
+        this.waitingListRepository = waitingListRepository;
         this.bookOwnerMapper = bookOwnerMapper;
     }
 
@@ -38,19 +44,26 @@ public class BookOwnerService {
     // camelCase instead of underscore
     public BookOwnerDTO createBookOwner(BookOwnerDTO createDTO) throws UnsupportedOperationException {
         List<BookOwner> bookOwners =
-                bookOwnerRepository.findBookOwnersByBook_idAndUser_id(createDTO.getBookId(), createDTO.getUserId());
+                bookOwnerRepository.findBookOwnersByBookIdAndUserId(createDTO.getBookId(), createDTO.getUserId());
 
         if (bookOwners.size() > 0) {
             throw new UnsupportedOperationException(
-                    "Book owner data with this owner and book title already exists. Please choose another values");
+                    "Book owner data with this owner and book title already exists. Please choose other values");
         }
         BookOwner bookOwnerToSave = bookOwnerMapper.toEntity(createDTO);
         BookOwner savedBookOwner = bookOwnerRepository.save(bookOwnerToSave);
         return bookOwnerMapper.toDto(savedBookOwner);
     }
 
-    public void deleteById(Long id) {
+    public BookOwner deleteById(Long id) throws UnsupportedOperationException {
+        List<WaitingList> waitingLists = waitingListRepository.findWaitingListsByBookForReading(id);
+        BookOwner bookOwner = bookOwnerRepository.findById(id).get();
+        if (waitingLists.size() > 0) {
+            throw new UnsupportedOperationException("Sorry, you can not delete the chosen book owner. It is used in " +
+                    "other tables.");
+        }
         bookOwnerRepository.deleteById(id);
+        return bookOwner;
     }
 
     public BookOwner updateBookOwner(Long id, BookOwner bookOwner) {

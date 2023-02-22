@@ -22,14 +22,18 @@ import java.util.List;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    @Column(name = "user_id")
+    private Long userId;
     @Schema(description = "The first name can not contain numbers")
     @Pattern(regexp = "[A-Za-z]{2,}", message = "The first name can not contain numbers")
-    private String first_name;
+    @Column(name = "first_name")
+    private String firstName;
     @Schema(description = "The last name can not contain numbers")
     @Pattern(regexp = "[A-Za-z]{2,}", message = "The Last name can not contain numbers")
-    private String last_name;
-    private Integer user_age;
+    @Column(name = "last_name")
+    private String lastName;
+    @Column(name = "user_age")
+    private Integer userAge;
 
     @Schema(description = "username is unique")
     @Column(unique = true)
@@ -37,12 +41,17 @@ public class User implements Serializable {
     @Schema(description = "The email must fulfill some requirements")
     @Pattern(regexp = "^[a-z\\d._\\-]{3,25}@[a-z\\d\\-]{3,8}\\.[a-z]{2,3}$", message = "The user email " +
             "must fulfill some requirements")
-    private String user_email;
+    @Column(name = "user_email")
+    private String userEmail;
 
     @Schema(description= "password need to contain at least a number, a lower case and an upper case")
-    private String user_password;
-    @Column(updatable = false, insertable = false)
-    private Long role_id;
+    @Column(name = "user_password")
+    private String userPassword;
+    @Column(updatable = false, insertable = false, name="role_id")
+    private Long roleId;
+
+
+
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Book> books;

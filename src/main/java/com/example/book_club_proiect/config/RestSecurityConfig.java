@@ -15,13 +15,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UsernamePWDAuthenticationProvider usernamePWDAuthenticationProvider;
-
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(usernamePWDAuthenticationProvider);
-        //Todo: this password should be encoded
     }
-
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -37,18 +34,18 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-
                 .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole("admin", "user")
-                .antMatchers(HttpMethod.GET, "/api/rentingTables").hasAnyRole("admin", "user")
-                .antMatchers(HttpMethod.GET, "/api/rentingTables/**").hasAnyRole("admin", "user")
-                .antMatchers(HttpMethod.POST, "/api/users/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/rentingTables/**").hasAnyRole("admin", "user")
-                .antMatchers(HttpMethod.POST, "/api/books").hasRole("admin")
+                .antMatchers(HttpMethod.POST, "/api/users").hasAnyRole("admin", "user")
+                .antMatchers(HttpMethod.POST, "/api/rentingTables").hasAnyRole("admin", "user")
+                .antMatchers(HttpMethod.POST, "/api/waitingLists").hasAnyRole("admin", "user")
+                .antMatchers(HttpMethod.POST, "/api/myListings").hasAnyRole("admin", "user")
+                .antMatchers(HttpMethod.POST, "/api/books").hasAnyRole("admin", "user")
                 .antMatchers(HttpMethod.POST, "/api/bookOwners").hasAnyRole("admin", "user")
+                .antMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("admin")
                 .antMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyRole("admin", "user")
                 .antMatchers(HttpMethod.DELETE, "/api/rentingTables/**").hasAnyRole("admin", "user")
-                .antMatchers(HttpMethod.PUT, "/api/books/**").hasAnyRole("admin", "user")
-
+                .antMatchers(HttpMethod.DELETE, "/api/deleteMyListing").hasAnyRole("admin", "user")
+                .antMatchers(HttpMethod.DELETE, "/api/waitingLists/**").hasAnyRole("admin", "user")
                 .and()
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()));
 

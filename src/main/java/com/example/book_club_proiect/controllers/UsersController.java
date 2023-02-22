@@ -102,7 +102,7 @@ public class UsersController {
     public Map<String, Long> getCurrentUsersId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findUserByUsername(auth.getName());
-        Long id = currentUser.getUser_id();
+        Long id = currentUser.getUserId();
         Map<String, Long> results = new HashMap<>();
         results.put("id", id);
         return results;

@@ -9,8 +9,8 @@ public class RolesMapperImpl implements RolesMapper {
     @Override
     public RolesDTO toDto(Roles entity) {
         RolesDTO dto = RolesDTO.builder()
-                .roleId(entity.getRole_Id())
-                .roleName(entity.getRole_name())
+                .roleId(entity.getRoleId())
+                .roleName(entity.getRoleName())
                 .build();
         return dto;
     }

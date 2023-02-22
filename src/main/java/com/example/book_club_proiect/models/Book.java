@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "books")
@@ -16,8 +17,8 @@ import java.util.List;
 @Setter
 @Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//toDo -serializable out, collections are final
-public class Book implements Serializable  {
+
+public class Book  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +28,12 @@ public class Book implements Serializable  {
     private String authorLname;
     private Integer published;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
             name = "book_owner",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
-
+    private  List<User> users;
 
 
 

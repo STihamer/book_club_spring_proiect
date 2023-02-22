@@ -12,13 +12,26 @@ public class RentingTableMapperImpl implements RentingTableMapper {
     public RentingTableDTO toDto(RentingTable entity) {
         RentingTableDTO dto = RentingTableDTO.builder()
                 .id(entity.getId())
-                .borrowedBy(entity.getBorrowed_by())
-                .bookId(entity.getBook_id())
-                .borrowedDate(entity.getBorrowed_date())
-                .rentingPeriod(entity.getRenting_period())
-                .returnDate(entity.getReturn_date())
-                .returnDateExtended(entity.getReturn_date_extended())
+                .borrowedBy(entity.getBorrowedBy())
+                .bookId(entity.getBookId())
+                .borrowedDate(entity.getBorrowedDate())
+                .rentingPeriod(entity.getRentingPeriod())
+                .returnDate(entity.getReturnDate())
+                .returnDateExtended(entity.getReturnDateExtended())
                 .build();
         return dto;
+    }
+
+    @Override
+    public RentingTable toEntity(RentingTableDTO createDTO) {
+        return RentingTable.builder()
+                .id(createDTO.getId())
+                .borrowedBy(createDTO.getBorrowedBy())
+                .bookId(createDTO.getBookId())
+                .borrowedDate(createDTO.getBorrowedDate())
+                .rentingPeriod(createDTO.getRentingPeriod())
+                .returnDate(createDTO.getReturnDate())
+                .returnDateExtended(createDTO.getReturnDateExtended())
+                .build();
     }
 }

@@ -10,9 +10,9 @@ import java.util.List;
 
 @Repository
 public interface BookOwnerRepository extends JpaRepository<BookOwner, Long> {
-    @Query("select bo from book_owner bo where bo.book_id = ?1 and bo.user_id = ?2")
-    List<BookOwner> findBookOwnersByBook_idAndUser_id(Long bookId, Long userId);
 
-    @Query("select bo from book_owner bo where bo.user_id = ?1")
-    List<BookOwner> findBookOwnersByUser_id(Long userId);
+    List<BookOwner> findBookOwnersByBookIdAndUserId(Long bookId, Long userId);
+
+    List<BookOwner>findBookOwnersByUserId(Long userId);
+    List<BookOwner> findBookOwnersByBookId(Long id);
 }

@@ -1,5 +1,4 @@
 package com.example.book_club_proiect.security;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
@@ -13,14 +12,11 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
 import java.util.Date;
-
 @Service
 public class JWTService {
     private RSAPrivateKey privateKey;
     private RSAPublicKey publicKey;
     private long expirationTime = 1800000;
-
-
     @PostConstruct
     private void initKeys() throws NoSuchAlgorithmException {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
@@ -29,8 +25,6 @@ public class JWTService {
         privateKey = (RSAPrivateKey) keyPair.getPrivate();
         publicKey = (RSAPublicKey) keyPair.getPublic();
     }
-
-
     public String generateToken(String name, String role) {
         return JWT.create()
                 .withClaim("user", name)
@@ -38,7 +32,6 @@ public class JWTService {
                 .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
                 .sign(Algorithm.RSA256(publicKey, privateKey));
     }
-
     public String validateToken(String token) throws JWTVerificationException {
         String encodedPayload = JWT.require(Algorithm.RSA256(publicKey, privateKey))
                 .build()

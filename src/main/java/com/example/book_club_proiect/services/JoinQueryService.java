@@ -34,13 +34,12 @@ public class JoinQueryService {
     getMyBooksRenterReturnDateAndTitle(String first_name, String last_name) {
         List<GetMyBooksAndRentingPersonAndReturningDay> list =
                 userRepository.getMyBooksRenterReturnDateAndTitle(first_name, last_name);
-        list.forEach(l -> System.out.println(l));
         return list;
     }
 
     public List<FindBookByTitleInRentingTable> findMyBokByGivenTitle(String str) {
         List<FindBookByTitleInRentingTable> list = bookRepository.findMyBokByGivenTitle(str);
-        list.forEach(l -> System.out.println(l));
+
         return list;
     }
 
@@ -49,7 +48,6 @@ public class JoinQueryService {
                                                                                        String author_lname) {
         List<FindBookByTitleOrAuthorIfAvailable> list =
                 rentingTableRepository.findAllBookByAuthorNameOrBookTitle(book_title, author_fname, author_lname);
-        list.forEach(l -> System.out.println(l));
         return list;
     }
 

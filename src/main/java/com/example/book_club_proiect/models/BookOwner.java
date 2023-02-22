@@ -18,8 +18,10 @@ public class BookOwner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long book_id;
-    private Long user_id;
+    @Column(name = "book_id")
+    private Long bookId;
+    @Column(name = "user_id")
+    private Long userId;
     @OneToMany(mappedBy = "bookOwner")
     @JsonIgnore
     private List<WaitingList> waitingLists;

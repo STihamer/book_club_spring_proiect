@@ -44,7 +44,7 @@ public class MyListingService {
     public MyListing createMyListing(Long reading_person, Long book_title) throws UnsupportedOperationException {
 
         List<MyListing> myListings =
-                myListingRepository.findMyListingsByReading_personAndAndBook_title(book_title, reading_person);
+                myListingRepository.findMyListingsByReadingPersonAndBookTitle(reading_person, book_title);
         if (myListings.size() > 0) {
             throw new UnsupportedOperationException(
                     "You have already introduced this book with this user in your listing. Please choose another " +
@@ -52,8 +52,8 @@ public class MyListingService {
             );
         }
         MyListing myListing = new MyListing();
-        myListing.setReading_person(reading_person);
-        myListing.setBook_title(book_title);
+        myListing.setReadingPerson(reading_person);
+        myListing.setBookTitle(book_title);
         myListing.setUsers(userRepository.findById(reading_person).get());
         myListing.setBooks(bookRepository.findById(book_title).get());
         return myListingRepository.saveAndFlush(myListing);
@@ -63,11 +63,10 @@ public class MyListingService {
         List<MyListing> operatedList = new ArrayList<>();
         myListingRepository.findAll().stream()
                 .filter(e -> e.getBooks().getBookTitle().equals(book_title))
-                .filter(e -> e.getUsers().getFirst_name().equals(first_name))
-                .filter(e -> e.getUsers().getLast_name().equals(last_name))
+                .filter(e -> e.getUsers().getFirstName().equals(first_name))
+                .filter(e -> e.getUsers().getLastName().equals(last_name))
                 .forEach(e -> operatedList.add(e));
         myListingRepository.deleteAll(operatedList);
-
     }
 
     public void deleteMyListingById(Long id) {

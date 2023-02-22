@@ -18,11 +18,11 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class RentingPeriods implements Serializable {
+public class RentingPeriods  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long renting_period;
+    private Long rentingPeriod;
 
     @OneToMany(mappedBy = "renting_periods")
     @JsonIgnore

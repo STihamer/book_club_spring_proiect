@@ -1,7 +1,7 @@
 package com.example.book_club_proiect.controllers;
 
 
-import com.example.book_club_proiect.models.Book;
+import com.example.book_club_proiect.dto.RentingTableDTO;
 import com.example.book_club_proiect.models.RentingTable;
 import com.example.book_club_proiect.services.RentingTableService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -26,8 +26,8 @@ public class RentingTableController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<RentingTable> getAll() {
-        return rentingTableService.getAll();
+    public ResponseEntity<List<RentingTableDTO>> getAll() {
+        return ResponseEntity.ok(rentingTableService.getAll());
     }
 
     @GetMapping
@@ -38,19 +38,22 @@ public class RentingTableController {
     }
 
     @PostMapping
-    public RentingTable createMyRentingTable(
+    public ResponseEntity createMyRentingTable(
             @RequestParam Long borrowed_by,
             @RequestParam Long book_id,
             @RequestParam Long renting_period) {
-        return rentingTableService.createMyRentingTable(borrowed_by, book_id, renting_period);
+        try {
+            return ResponseEntity.ok(rentingTableService.createMyRentingTable(borrowed_by, book_id, renting_period));
+        } catch (UnsupportedOperationException exception) {
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 
 
-
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public  RentingTable findRentingTableByIdAndChangeRenting_period
+    public RentingTable findRentingTableByIdAndChangeRenting_period
             (@PathVariable Long id,
-             @RequestParam(value = "period", required=false)Long  period) {
+             @RequestParam(value = "period", required = false) Long period) {
         return rentingTableService.findRentingTableByIdAndChangeRenting_period(id, period);
     }
 
@@ -61,11 +64,12 @@ public class RentingTableController {
 
 
     @GetMapping("/findBooksByTitleOrAuthorName")
-    public List<RentingTable> findBooksByTitleOrAuthorName(
+    public ResponseEntity<List<RentingTableDTO>> findBooksByTitleOrAuthorName(
             @RequestParam(value = "book_title", required = false) String bookTitle,
             @RequestParam(value = "author_fname", required = false) String authorFirstName,
             @RequestParam(value = "author_lname", required = false) String authorLastName
     ) {
-        return rentingTableService.findRentingTablesByBookTitleOrAuthorName(bookTitle,authorFirstName,authorLastName);
+        return ResponseEntity.ok(rentingTableService.findRentingTablesByBookTitleOrAuthorName(bookTitle,
+                authorFirstName, authorLastName));
     }
 }

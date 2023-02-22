@@ -1,6 +1,7 @@
 package com.example.book_club_proiect.controllers;
 
 
+import com.example.book_club_proiect.dto.RentingPeriodsDTO;
 import com.example.book_club_proiect.models.Book;
 import com.example.book_club_proiect.models.MyListing;
 import com.example.book_club_proiect.models.RentingPeriods;
@@ -28,8 +29,8 @@ public class RentingPeriodsController {
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<RentingPeriods> getAll() {
-        return rentingPeriodsService.getAll();
+    public ResponseEntity<List<RentingPeriodsDTO>> getAll() {
+        return ResponseEntity.ok(rentingPeriodsService.getAll());
     }
 
     @GetMapping

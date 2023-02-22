@@ -3,7 +3,13 @@ package com.example.book_club_proiect.services;
 import com.example.book_club_proiect.dto.BookDTO;
 import com.example.book_club_proiect.mapper.BookMapper;
 import com.example.book_club_proiect.models.Book;
+import com.example.book_club_proiect.models.BookOwner;
+import com.example.book_club_proiect.models.MyListing;
+import com.example.book_club_proiect.models.RentingTable;
+import com.example.book_club_proiect.repositories.BookOwnerRepository;
 import com.example.book_club_proiect.repositories.BookRepository;
+import com.example.book_club_proiect.repositories.MyListingRepository;
+import com.example.book_club_proiect.repositories.RentingTableRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,9 +23,19 @@ public class BookService {
     private final BookMapper bookMapper;
     private final BookRepository bookRepository;
 
-    public BookService(BookMapper bookMapper, BookRepository bookRepository) {
+    private final MyListingRepository myListingRepository;
+    private final BookOwnerRepository bookOwnerRepository;
+    private final RentingTableRepository rentingTableRepository;
+
+    public BookService(BookMapper bookMapper, BookRepository bookRepository, MyListingRepository myListingRepository,
+                       BookOwnerRepository bookOwnerRepository,
+                       RentingTableRepository rentingTableRepository) {
         this.bookMapper = bookMapper;
         this.bookRepository = bookRepository;
+
+        this.myListingRepository = myListingRepository;
+        this.bookOwnerRepository = bookOwnerRepository;
+        this.rentingTableRepository = rentingTableRepository;
     }
 
     public List<BookDTO> getAll() {
@@ -34,21 +50,28 @@ public class BookService {
 
     public BookDTO createBook(BookDTO createDTO) throws UnsupportedOperationException {
 
-        List<Book> books = bookRepository.findBooksByTitle(createDTO.getBookTitle());
-        if(books.size() > 0){
+        List<Book> books = bookRepository.findBooksByBookTitle(createDTO.getBookTitle());
+        if (books.size() > 0) {
 
             throw new UnsupportedOperationException(
                     "A book with this title  : " + createDTO.getBookTitle() + " already exists");
         }
-
         Book bookToSave = bookMapper.toEntity(createDTO);
         Book savedBook = bookRepository.save(bookToSave);
         return bookMapper.toDto(savedBook);
 
     }
+    public Book deleteBookById(Long id) throws UnsupportedOperationException {
+        List<MyListing> myListings = myListingRepository.findMyListingsByBookTitle(id);
+        List<BookOwner> bookOwners = bookOwnerRepository.findBookOwnersByBookId(id);
+        List<RentingTable> rentingTables = rentingTableRepository.findRentingTablesByBookId(id);
 
-    public void deleteBookById(Long id) {
+        if (myListings.size() > 0 || bookOwners.size() > 0 || rentingTables.size() > 0) {
+            throw new UnsupportedOperationException("Sorry, you can not delete book: " + ". It " +
+                    "is used in another table.");
+        }
         bookRepository.deleteById(id);
+        return null;
     }
 
     public BookDTO updateBook(Long id, BookDTO bookToBeUpdated) throws UnsupportedOperationException {

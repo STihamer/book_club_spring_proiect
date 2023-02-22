@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "roles")
 @NoArgsConstructor
@@ -22,9 +19,8 @@ public class Roles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long role_Id;
-
-    private String role_name;
-
-
+    @Column(name = "role_id")
+    private Long roleId;
+    @Column(name = "role_name")
+    private String roleName;
 }

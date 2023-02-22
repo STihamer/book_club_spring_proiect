@@ -1,49 +1,57 @@
 package com.example.book_club_proiect.services;
 
-import com.example.book_club_proiect.models.BookOwner;
+import com.example.book_club_proiect.dto.WaitingListDTO;
+import com.example.book_club_proiect.mapper.WaitingListMapper;
 import com.example.book_club_proiect.models.WaitingList;
 import com.example.book_club_proiect.repositories.BookOwnerRepository;
 import com.example.book_club_proiect.repositories.UserRepository;
 import com.example.book_club_proiect.repositories.WaitingListRepository;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class WaitingListService {
-    @Autowired
+
     private final WaitingListRepository waitingListRepository;
 
-    @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
     private final BookOwnerRepository bookOwnerRepository;
+
+    private final WaitingListMapper waitingListMapper;
+
     public WaitingListService(WaitingListRepository waitingListRepository, UserRepository userRepository,
-                              BookOwnerRepository bookOwnerRepository) {
+                              BookOwnerRepository bookOwnerRepository, WaitingListMapper waitingListMapper) {
         this.waitingListRepository = waitingListRepository;
         this.userRepository = userRepository;
         this.bookOwnerRepository = bookOwnerRepository;
+        this.waitingListMapper = waitingListMapper;
     }
 
-    public List<WaitingList> getAll() {
-        return waitingListRepository.findAll();
+    public List<WaitingListDTO> getAll() {
+
+        return waitingListRepository.findAll().stream().map(waitingListMapper::toDto).collect(Collectors.toList());
     }
 
-    public Optional<WaitingList> getById(Long id) {
-
-        return waitingListRepository.findById(id);
+    public Optional<WaitingListDTO> getById(Long id) {
+        WaitingList waitingList = waitingListRepository.findById(id).get();
+        return Optional.of(waitingListMapper.toDto(waitingList));
     }
 
-    public WaitingList createMyWaitingList(Long user_id, Long book_for_reading, Boolean finished) {
+    public WaitingList createMyWaitingList(Long user_id, Long book_for_reading, Boolean finished) throws UnsupportedOperationException {
+        List<WaitingList> waitingLists = waitingListRepository.findWaitingListsByUserIdAndBookForReading(user_id,
+                book_for_reading);
+        if (waitingLists.size() > 0) {
+            throw new UnsupportedOperationException(
+                    "You have already the given value in waiting list. Please choose another book");
+        }
         WaitingList waitingList = new WaitingList();
-        waitingList.setUser_id(user_id);
+        waitingList.setUserId(user_id);
         waitingList.setFinished(finished);
-        waitingList.setBook_for_reading(book_for_reading);
+        waitingList.setBookForReading(book_for_reading);
         waitingList.setUsers(userRepository.findById(user_id).get());
         waitingList.setBookOwner(bookOwnerRepository.findById(book_for_reading).get());
 

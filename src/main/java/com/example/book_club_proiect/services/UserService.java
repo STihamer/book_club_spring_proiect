@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserMapper userMapper;
-
     private final UserRepository userRepository;
     private final MyListingRepository myListingRepository;
     private final BookOwnerRepository bookOwnerRepository;
@@ -38,45 +37,39 @@ public class UserService {
 
 
     public List<UserDTO> getAll() {
-
         return userRepository.findAll().stream().map(userMapper::toDto).collect(Collectors.toList());
     }
-
     public Optional<UserDTO> getById(Long id) {
         User user = userRepository.findById(id).get();
         return Optional.of(userMapper.toDto(user));
     }
-
     public User createUser(String first_name, String last_name, Integer user_age, String username, String user_email,
                            String user_password, Long role_id) {
         List<User> users = userRepository.findUsersByUsername(username).stream().toList();
         if (users.size() > 0) {
-
             throw new UnsupportedOperationException(
                     "An user with this username  : " + username + " already exists");
         }
         User user = new User();
-        user.setFirst_name(first_name);
-        user.setLast_name(last_name);
-        user.setUser_age(user_age);
+        user.setFirstName(first_name);
+        user.setLastName(last_name);
+        user.setUserAge(user_age);
         user.setUsername(username);
-        user.setUser_email(user_email);
-        user.setUser_password(user_password);
-        user.setRole_id(role_id);
+        user.setUserEmail(user_email);
+        user.setUserPassword(user_password);
+        user.setRoleId(role_id);
         user.setRoles(rolesRepository.findById(role_id).get());
         return userRepository.saveAndFlush(user);
-
     }
-
     public User deleteUserById(Long id) throws UnsupportedOperationException {
-        List<MyListing> listings = myListingRepository.findAllByReading_person(id).stream().toList();
-        List<BookOwner> bookOwners = bookOwnerRepository.findBookOwnersByUser_id(id);
-        List<WaitingList> waitingLists = waitingListRepository.findWaitingListsByUser_id(id);
-        List<RentingTable> rentingTableList =rentingTableRepository.findRentingTablesByBorrowed_by(id);
+        List<MyListing> listings = myListingRepository.findAllByReadingPerson(id).stream().toList();
+        List<BookOwner> bookOwners = bookOwnerRepository.findBookOwnersByUserId(id);
+        List<WaitingList> waitingLists = waitingListRepository.findWaitingListsByUserId(id);
+        List<RentingTable> rentingTableList =rentingTableRepository.findRentingTablesByBorrowedBy(id);
         User user = userRepository.findById(id).get();
         if(listings.size()>0 || bookOwners.size()>0 || waitingLists.size()>0 || rentingTableList.size()>0){
             throw new UnsupportedOperationException(
-                    "You can not delete   : " + user.getUsername() + " because it is used in another places.");
+                    "You can not delete   : " + user.getUsername() + " because it is used in other places.");
         }
          userRepository.deleteById(id);
         return user;
@@ -84,12 +77,12 @@ public class UserService {
 
     public User updateUser(Long id, UserDTO userDto) {
         User existingUser = userRepository.findById(id).get();
-        existingUser.setFirst_name(userDto.getFirstName());
-        existingUser.setLast_name(userDto.getLastName());
-        existingUser.setUser_age(userDto.getUserAge());
+        existingUser.setFirstName(userDto.getFirstName());
+        existingUser.setLastName(userDto.getLastName());
+        existingUser.setUserAge(userDto.getUserAge());
         existingUser.setUsername(userDto.getUsername());
-        existingUser.setUser_email(userDto.getUserEmail());
-        existingUser.setRole_id(userDto.getRoleId());
+        existingUser.setUserEmail(userDto.getUserEmail());
+        existingUser.setRoleId(userDto.getRoleId());
         existingUser.setRoles(rolesRepository.findById(userDto.getRoleId()).get());
         return userRepository.saveAndFlush(existingUser);
     }

@@ -19,11 +19,11 @@ public class MyListing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(updatable = false, insertable = false)
-    private Long reading_person;
+    @Column(updatable = false, insertable = false,name = "reading_person")
+    private Long readingPerson;
 
-    @Column(updatable = false, insertable = false)
-    private Long book_title;
+    @Column(updatable = false, insertable = false,name = "book_title")
+    private Long bookTitle;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="reading_person")
